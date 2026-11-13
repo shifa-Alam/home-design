@@ -1,0 +1,1384 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>শিফার বাড়ি — ৩ডি মডেল (৩ তলা)</title>
+<meta name="description" content="শিফার বাড়ির ৩ডি মডেল — ৩ তলা আরসিসি বাড়ি, প্লট ৪৫' × ৪৮'। ঘুরিয়ে দেখুন, প্রতিটি তলা কেটে দেখুন, ভেতরে ঘরে ঘরে হেঁটে দেখুন।">
+<meta property="og:title" content="শিফার বাড়ি — ৩ডি মডেল">
+<meta property="og:description" content="৩ তলা বাড়ির ৩ডি মডেল — ঘুরিয়ে দেখুন, তলা কেটে দেখুন, ভেতরে হেঁটে দেখুন।">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#1f4f8a">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏠</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--blue:#1f4f8a;--green:#2e7d32;--red:#b23a2a;--card:rgba(255,255,255,.95);--line:#d5dee7;--txt:#1d2733}
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;overflow:hidden;font-family:"Hind Siliguri","Noto Sans Bengali","Nirmala UI",system-ui,sans-serif;color:var(--txt);background:linear-gradient(#8fbbe0 0%,#c7def0 45%,#e9f1f6 100%);-webkit-tap-highlight-color:transparent}
+  #c{display:block;width:100%;height:100%;touch-action:none}
+  button{font-family:inherit;border:1px solid var(--line);background:#fff;border-radius:10px;padding:7px 11px;font-size:14px;line-height:1.2;cursor:pointer;color:var(--txt);transition:background .15s}
+  button:hover{background:#eef4fa}
+  button.on{background:var(--blue);color:#fff;border-color:var(--blue)}
+  /* top bar */
+  #topbar{position:absolute;left:0;right:0;top:0;display:flex;align-items:center;gap:8px;padding:10px 12px;padding-top:max(10px,env(safe-area-inset-top));pointer-events:none;z-index:6}
+  #topbar .title{pointer-events:auto;background:var(--card);border-radius:12px;padding:6px 12px;box-shadow:0 4px 14px rgba(0,0,0,.12);font-weight:700;font-size:16px;white-space:nowrap}
+  #topbar .title small{display:block;font-weight:500;font-size:11.5px;color:#5b6775}
+  #topbar .sp{flex:1}
+  #topbar button{pointer-events:auto;border:0;border-radius:22px;padding:9px 14px;font-weight:600;box-shadow:0 4px 14px rgba(0,0,0,.18)}
+  #panelBtn{background:var(--blue);color:#fff}
+  #helpBtn,#infoBtn{background:#fff}
+  /* control panel */
+  .panel{position:absolute;left:12px;top:78px;width:300px;max-height:calc(100% - 96px);overflow:auto;background:var(--card);border-radius:14px;padding:12px 14px 14px;box-shadow:0 6px 22px rgba(0,0,0,.16);z-index:5}
+  .grp{font-size:12.5px;font-weight:700;color:var(--blue);margin:12px 0 6px;display:flex;align-items:center;gap:6px}
+  .grp:first-child{margin-top:2px}
+  .btns{display:flex;flex-wrap:wrap;gap:6px}
+  #walkB{width:100%;background:var(--green);color:#fff;border-color:var(--green);font-weight:700;font-size:15px;padding:10px}
+  #legend{font-size:12.5px;line-height:1.6;margin-top:6px}
+  .info{position:absolute;right:12px;bottom:12px;background:var(--card);border-radius:14px;padding:10px 14px;font-size:13px;line-height:1.6;max-width:340px;box-shadow:0 6px 22px rgba(0,0,0,.16);z-index:4}
+  .info b{color:var(--blue)}
+  .hint{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);font-size:13px;color:#334;background:rgba(255,255,255,.85);padding:5px 12px;border-radius:20px;white-space:nowrap;z-index:3}
+  body.clean .panel{display:none}
+  #infoBtn{display:none}
+  /* help */
+  #help{position:fixed;inset:0;background:rgba(10,20,35,.55);display:none;align-items:center;justify-content:center;z-index:20;padding:16px}
+  body.showhelp #help{display:flex}
+  #help .box{background:#fff;border-radius:16px;max-width:460px;width:100%;max-height:90vh;overflow:auto;padding:18px 20px;box-shadow:0 10px 40px rgba(0,0,0,.3)}
+  #help h2{margin:0 0 6px;font-size:20px;color:var(--blue)}
+  #help ul{padding-left:20px;margin:8px 0 14px;line-height:1.7;font-size:14.5px}
+  #help .ok{width:100%;background:var(--blue);color:#fff;border:0;padding:11px;font-size:16px;font-weight:700}
+  /* loading */
+  #loading{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:linear-gradient(#8fbbe0,#e9f1f6);z-index:30;font-size:18px;font-weight:600;color:var(--blue)}
+  #loading .spin{width:44px;height:44px;border:5px solid #fff;border-top-color:var(--blue);border-radius:50%;animation:sp 1s linear infinite}
+  @keyframes sp{to{transform:rotate(360deg)}}
+  /* walk mode */
+  body.walking .panel, body.walking .info, body.walking .hint, body.walking #topbar{display:none}
+  #walkUI{display:none}
+  body.walking #walkUI{display:block}
+  #walkTop{position:fixed;left:10px;right:10px;top:max(10px,env(safe-area-inset-top));display:flex;gap:6px;flex-wrap:wrap;align-items:center;background:var(--card);padding:8px 10px;border-radius:14px;box-shadow:0 4px 18px rgba(0,0,0,.15);font-size:14px;z-index:6;width:max-content;max-width:calc(100vw - 20px)}
+  #walkTop b{color:var(--blue);margin-right:2px}
+  #walkExit{background:var(--red);color:#fff;border-color:var(--red);font-weight:700}
+  #walkPad{position:fixed;right:16px;bottom:max(16px,env(safe-area-inset-bottom));display:grid;grid-template-columns:repeat(3,60px);grid-template-rows:repeat(2,60px);gap:8px;z-index:6}
+  #walkPad button{font-size:24px;padding:0;border-radius:14px;background:rgba(255,255,255,.92);box-shadow:0 3px 10px rgba(0,0,0,.2);user-select:none;-webkit-user-select:none;touch-action:none}
+  #walkPad button:active{background:var(--blue);color:#fff}
+  #walkHint{position:fixed;left:12px;bottom:16px;font-size:13px;background:rgba(255,255,255,.88);padding:6px 12px;border-radius:12px;max-width:calc(100vw - 260px)}
+  #walkHere{position:fixed;left:50%;top:70px;transform:translateX(-50%);font-size:15px;font-weight:700;color:#fff;background:rgba(31,79,138,.88);padding:5px 16px;border-radius:20px;pointer-events:none;display:none;z-index:6}
+  /* phones & small tablets: menu becomes a bottom sheet */
+  @media (max-width:760px){
+    #topbar .title{font-size:14.5px;padding:5px 10px}
+    #topbar .title small{display:none}
+    #topbar button{padding:8px 11px;font-size:13.5px}
+    #infoBtn{display:inline-block}
+    .panel{left:0;right:0;top:auto;bottom:0;width:auto;max-height:52vh;border-radius:18px 18px 0 0;padding:6px 14px calc(14px + env(safe-area-inset-bottom));box-shadow:0 -6px 24px rgba(0,0,0,.2)}
+    .panel:before{content:"";display:block;width:44px;height:5px;border-radius:3px;background:#c5ced8;margin:4px auto 6px}
+    .btns button{flex:1 1 auto;padding:9px 8px;font-size:14px}
+    .info{display:none;left:10px;right:10px;bottom:auto;top:66px;max-width:none;max-height:45vh;overflow:auto}
+    body.showinfo .info{display:block}
+    .hint{display:none}
+    #walkHint{display:none}
+    #walkTop{font-size:13px;padding:6px 8px}
+    #walkTop button{padding:7px 9px;font-size:13px}
+    #walkHere{top:auto;bottom:160px}
+  }
+</style>
+</head>
+<body>
+<div id="loading"><div class="spin"></div>৩ডি মডেল লোড হচ্ছে…</div>
+<canvas id="c"></canvas>
+<div id="topbar">
+  <div class="title">🏠 শিফার বাড়ি — ৩ডি<small>৩ তলা আরসিসি বাড়ি · প্লট ৪৫' × ৪৮'</small></div>
+  <div class="sp"></div>
+  <button id="infoBtn">ℹ️ তথ্য</button>
+  <button id="helpBtn">❓ সাহায্য</button>
+  <button id="panelBtn">☰ মেনু</button>
+</div>
+<div class="panel">
+  <div class="grp">🚶 ভেতরে হেঁটে দেখুন</div>
+  <button id="walkB">🚶 ভেতরে ঢুকুন — ঘরে ঘরে হাঁটুন</button>
+  <div class="grp">🏢 কোন তলা দেখবেন (ছাদ সরিয়ে)</div>
+  <div class="btns">
+    <button data-cut="-1" class="on">পুরো বাড়ি</button>
+    <button data-cut="0">নিচতলা</button>
+    <button data-cut="1">দোতলা</button>
+    <button data-cut="2">তিনতলা</button>
+  </div>
+  <div class="grp">🎥 কোন দিক থেকে দেখবেন</div>
+  <div class="btns">
+    <button id="cW">সামনে (মেইন রোড)</button>
+    <button id="cNW">রাস্তার কোণা</button>
+    <button id="cSE">পেছন (দক্ষিণ-পূর্ব)</button>
+    <button id="cTop">উপর থেকে</button>
+    <button id="cSpin">নিজে নিজে ঘুরুক</button>
+  </div>
+  <div class="grp">👁️ দেখার ধরন</div>
+  <div class="btns">
+    <button id="vExt" class="on">বাড়ি</button>
+    <button id="vFnd">ফাউন্ডেশন</button>
+    <button id="nightB">🌙 রাতের দৃশ্য</button>
+    <button id="dimB" class="on">📏 মাপ</button>
+    <button id="wCol">🎨 রঙ দিয়ে চিনুন</button>
+  </div>
+  <div id="legend"></div>
+  <div class="grp">🏪 নিচতলার অপশন</div>
+  <div class="btns">
+    <button data-shops="3">৩টি দোকান</button><button data-shops="2" class="on">২টি দোকান</button><button data-shops="0">দোকান নেই</button>
+    <button id="shB" class="on">শাটার: নামানো</button>
+    <button id="unitB">পার্কিং জায়গা: পার্কিং</button>
+  </div>
+</div>
+<div class="info" id="info"></div>
+<div id="walkUI">
+  <div id="walkTop"><b>হাঁটছেন:</b>
+    <button data-wk="0">নিচতলা</button><button data-wk="1">দোতলা</button><button data-wk="2">তিনতলা</button>
+    <button id="walkExit">✕ বের হন</button></div>
+  <div id="walkHere"></div>
+  <div id="walkPad">
+    <span></span><button data-pad="f" aria-label="সামনে">▲</button><span></span>
+    <button data-pad="l" aria-label="বামে ঘুরুন">↶</button><button data-pad="b" aria-label="পেছনে">▼</button><button data-pad="r" aria-label="ডানে ঘুরুন">↷</button>
+  </div>
+  <div id="walkHint">W / ↑ সামনে · S / ↓ পেছনে · ← → ঘুরুন · A / D পাশে সরুন · মাউস টেনে চারদিকে তাকান · Esc = বের হন</div>
+</div>
+<div class="hint">মাউস/আঙুল দিয়ে টেনে ঘোরান · স্ক্রল/দুই আঙুলে জুম · ডান-ক্লিক টেনে সরান</div>
+<div id="help"><div class="box">
+  <h2>🏠 কিভাবে দেখবেন</h2>
+  <ul>
+    <li><b>ঘোরানো:</b> মাউস বা এক আঙুল দিয়ে টানুন।</li>
+    <li><b>বড়/ছোট (জুম):</b> মাউস স্ক্রল করুন, মোবাইলে দুই আঙুলে চিমটি দিন।</li>
+    <li><b>সরানো:</b> ডান-ক্লিক করে টানুন, মোবাইলে দুই আঙুলে টানুন।</li>
+    <li><b>ভেতরে দেখা:</b> মেনু থেকে <i>নিচতলা / দোতলা / তিনতলা</i> চাপুন — উপরের অংশ সরে গিয়ে ঘরগুলো দেখা যাবে।</li>
+    <li><b>ঘরে ঘরে হাঁটা:</b> সবুজ <i>“ভেতরে ঢুকুন”</i> বোতাম চাপুন। কম্পিউটারে W/↑ দিয়ে হাঁটুন, ← → দিয়ে ঘুরুন; মোবাইলে নিচের ▲ ▼ ↶ ↷ বোতাম চেপে ধরুন, আর আঙুল দিয়ে টেনে চারদিকে তাকান।</li>
+    <li><b>অপশন:</b> রাতের দৃশ্য, মাপ, রঙ দিয়ে দেয়াল/আসবাব চেনা, নিচতলায় ৩টি / ২টি দোকান বা দোকান নেই, পার্কিং বা অস্থায়ী ইউনিট — সব মেনুতে।</li>
+  </ul>
+  <button class="ok" id="helpOk">ঠিক আছে, দেখি!</button>
+</div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+function MAIN(){
+// ---------- units: feet. X = east, Y = up, Z = south (north = -Z) ----------
+const canvas = document.getElementById('c');
+const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:true});
+renderer.outputEncoding = THREE.sRGBEncoding;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.05;
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.localClippingEnabled = true;
+const scene = new THREE.Scene();
+scene.background = null;
+scene.fog = new THREE.Fog(0xdde8f1, 230, 560);
+
+const camera = new THREE.PerspectiveCamera(40, 1, 0.5, 2000);
+const controls = new THREE.OrbitControls(camera, canvas);
+controls.enableDamping = true; controls.dampingFactor = 0.08;
+controls.maxPolarAngle = Math.PI * 0.495;
+controls.minDistance = 20; controls.maxDistance = 330;
+
+// lights
+scene.add(new THREE.HemisphereLight(0xe8f2ff, 0x7d8a6a, 0.45));
+const sun = new THREE.DirectionalLight(0xffe9cc, 1.35);
+sun.position.set(-60, 110, 80);
+sun.castShadow = true;
+sun.shadow.mapSize.set(4096, 4096); sun.shadow.normalBias = 0.04;
+const sc = sun.shadow.camera; sc.left=-80; sc.right=80; sc.top=80; sc.bottom=-80; sc.near=10; sc.far=320;
+sun.shadow.bias = -0.0003;
+scene.add(sun);
+
+// ---------- materials ----------
+const clip = []; // global clipping plane list (shared array)
+function M(color, o){ return new THREE.MeshStandardMaterial(Object.assign({color, roughness:0.85, metalness:0.0, clippingPlanes:clip}, o||{})); }
+const mat = {
+  wall: M(0xf6f6f3), wallIn: M(0xfbf8f2), led: new THREE.MeshStandardMaterial({color:0xffe2b0, emissive:0xffcf8a, emissiveIntensity:0.9, clippingPlanes:clip}), wShop: M(0xf2a65a), wCore: M(0xb39ddb), wPark: M(0xe57373), accent: M(0x3f444a, {roughness:0.6}), col: M(0xf3eee6),
+  slab: M(0xd9d4cc), band: M(0x3a3e43, {roughness:0.55}), plinth: M(0x8f8a82),
+  glass: M(0x2c4a60, {roughness:0.04, metalness:0.92, transparent:true, opacity:0.9, envMapIntensity:1.4}),
+  frame: M(0x2b2f33, {roughness:0.35, metalness:0.75}),
+  wood: M(0x9a6438, {roughness:0.7}), glassRail: M(0xa9c6d6, {roughness:0.05, metalness:0.2, transparent:true, opacity:0.35}),
+  plant: M(0x3f7d34), pot: M(0x5a5048),
+  rail: M(0x30353a, {roughness:0.5, metalness:0.5}),
+  floorA: M(0xe8dcc8), floorB: M(0xdfe6ea), bath: M(0xcfe0e8), kitchen: M(0xeadfcf),
+  stair: M(0xcac3b8), door: M(0x8a5a35), doorLeaf: M(0x6b3f1f, {roughness:0.6}), tank: M(0x2c4a6e),
+  grass: M(0x7fae5a), road: M(0x4a4d52), roadLine: M(0xf2f2f2), pave: M(0xbdb6aa),
+  bwall: M(0xe3ddd2), gate: M(0x2d3237, {metalness:0.5, roughness:0.4}),
+  soil: M(0x9a7b5c, {transparent:true, opacity:0.35}),
+  conc: M(0xa7a7a2), conc2: M(0x8f8f8a), rebar: M(0xb23a2a),
+  trunk: M(0x6b4a2f), leaf: M(0x4f8a3a), furn: M(0xb08a63), bed: M(0xf2f2f2), sofa: M(0x7c8ea6)
+};
+
+// ---------- realistic surfaces: procedural textures (drawn on a canvas, no downloads) ----------
+function rnd(a){ let t=a>>>0; return ()=>{ t+=0x6D2B79F5; let r=Math.imul(t^t>>>15,1|t); r^=r+Math.imul(r^r>>>7,61|r); return ((r^r>>>14)>>>0)/4294967296; }; }
+function canvasTex(size, draw){
+  try {
+    const c=document.createElement('canvas'); c.width=c.height=size; const g=c.getContext('2d'); if(!g) return null;
+    draw(g,size); const t=new THREE.CanvasTexture(c); t.wrapS=t.wrapT=THREE.RepeatWrapping; t.encoding=THREE.sRGBEncoding;
+    t.anisotropy=Math.min(8, renderer.capabilities.getMaxAnisotropy()); return t;
+  } catch(e){ return null; }
+}
+function noise(g,S,base,amp,seed,blob){
+  const R=rnd(seed); g.fillStyle=base; g.fillRect(0,0,S,S);
+  const id=g.getImageData(0,0,S,S), d=id.data;
+  for (let i=0;i<d.length;i+=4){ const v=(R()-0.5)*amp; d[i]+=v; d[i+1]+=v; d[i+2]+=v; }
+  g.putImageData(id,0,0);
+  for (let k=0;k<(blob||0);k++){ g.fillStyle='rgba('+(R()<0.5?'0,0,0':'255,255,255')+','+(0.02+R()*0.03)+')'; g.beginPath(); g.arc(R()*S,R()*S,10+R()*S*0.18,0,7); g.fill(); }
+}
+const TEX = {
+  plaster: canvasTex(512,(g,S)=>noise(g,S,'#f7f6f3',14,1,40)),
+  tile2:   canvasTex(512,(g,S)=>{ noise(g,S,'#f3f1ec',10,2,25); const R=rnd(9); g.strokeStyle='rgba(80,70,60,0.10)'; g.lineWidth=2;
+             for(let k=0;k<14;k++){ g.beginPath(); let x=R()*S,y=R()*S; g.moveTo(x,y); for(let j=0;j<6;j++){ x+=(R()-0.3)*90; y+=(R()-0.5)*60; g.lineTo(x,y);} g.stroke(); }   // faint marble veins
+             g.fillStyle='rgba(120,110,100,0.55)'; g.fillRect(0,0,S,4); g.fillRect(0,0,4,S); }),
+  wood:    canvasTex(512,(g,S)=>{ const R=rnd(3); g.fillStyle='#b98a5e'; g.fillRect(0,0,S,S);
+             for(let y=0;y<S;y+=2){ const v=Math.sin(y*0.09+Math.sin(y*0.013)*4)*18+(R()-0.5)*14; g.fillStyle='rgba('+(v>0?'90,55,25,':'255,230,200,')+(Math.abs(v)/120)+')'; g.fillRect(0,y,S,2); }
+             for(let k=0;k<6;k++){ g.fillStyle='rgba(70,40,20,0.25)'; g.beginPath(); g.ellipse(R()*S,R()*S,14,5,0,0,7); g.fill(); } }),
+  grass:   canvasTex(512,(g,S)=>{ noise(g,S,'#6f9e4c',38,4,60); const R=rnd(5);
+             for(let k=0;k<5000;k++){ const x=R()*S,y=R()*S; g.strokeStyle='rgba('+(R()<0.5?'40,80,25':'150,190,90')+','+(0.25+R()*0.35)+')'; g.lineWidth=1; g.beginPath(); g.moveTo(x,y); g.lineTo(x+(R()-0.5)*4,y-3-R()*5); g.stroke(); } }),
+  asphalt: canvasTex(512,(g,S)=>{ noise(g,S,'#4b4e53',40,6,30); const R=rnd(7); for(let k=0;k<4000;k++){ g.fillStyle='rgba(255,255,255,'+R()*0.18+')'; g.fillRect(R()*S,R()*S,1.5,1.5); } }),
+  pavers:  canvasTex(512,(g,S)=>{ noise(g,S,'#b9b0a2',22,8,0); const R=rnd(11), rows=8, bw=S/4, bh=S/rows;   // 1'x6" concrete pavers, running bond
+             for(let r=0;r<rows;r++) for(let c=-1;c<5;c++){ const x=c*bw+(r%2?bw/2:0), y=r*bh, t=(R()-0.5)*26;
+               g.fillStyle='rgba('+(t>0?'255,250,240,':'60,50,40,')+Math.abs(t)/160+')'; g.fillRect(x+3,y+3,bw-6,bh-6);
+               g.strokeStyle='rgba(70,60,50,0.55)'; g.lineWidth=3; g.strokeRect(x+1.5,y+1.5,bw-3,bh-3); } }),
+  brick:   canvasTex(512,(g,S)=>{ g.fillStyle='#cfc6b8'; g.fillRect(0,0,S,S); const R=rnd(13), rows=16, bw=S/5, bh=S/rows;   // 4'x4' of exposed brick
+             for(let r=0;r<rows;r++) for(let c=-1;c<6;c++){ const x=c*bw+(r%2?bw/2:0), y=r*bh, h=8+R()*14, l=34+R()*14;
+               g.fillStyle='hsl('+h+',45%,'+l+'%)'; g.fillRect(x+2,y+2,bw-4,bh-4); } }),
+  conc:    canvasTex(512,(g,S)=>noise(g,S,'#b4b2ad',26,14,50)),
+  stone:   canvasTex(512,(g,S)=>{ noise(g,S,'#8f8a82',30,15,30); const R=rnd(16); g.strokeStyle='rgba(40,35,30,0.6)'; g.lineWidth=3;
+             for(let y=0;y<S;y+=S/4){ g.beginPath(); g.moveTo(0,y); g.lineTo(S,y); g.stroke(); let x=R()*S/3; while(x<S){ g.beginPath(); g.moveTo(x,y); g.lineTo(x,y+S/4); g.stroke(); x+=S/4+R()*S/4; } } })
+};
+function useTex(m, t, tileFt, bump){ if(!m || !t) return; m.map=t; m.userData.tile=tileFt; if (bump){ m.bumpMap=t; m.bumpScale=bump; } m.needsUpdate=true; }
+useTex(mat.wall, TEX.plaster, 6, 0.012); useTex(mat.wallIn, TEX.plaster, 6, 0.008); useTex(mat.col, TEX.plaster, 6, 0.01);
+['wShop','wCore','wPark','bwall'].forEach(k=>useTex(mat[k], TEX.plaster, 6, 0.01));
+useTex(mat.floorA, TEX.tile2, 2); useTex(mat.floorB, TEX.tile2, 2); useTex(mat.bath, TEX.tile2, 1); useTex(mat.kitchen, TEX.tile2, 1.33);
+useTex(mat.stair, TEX.tile2, 1.5); useTex(mat.slab, TEX.conc, 8); useTex(mat.conc, TEX.conc, 6); useTex(mat.conc2, TEX.conc, 6); useTex(mat.plinth, TEX.stone, 3, 0.02);
+useTex(mat.door, TEX.wood, 3); useTex(mat.doorLeaf, TEX.wood, 3, 0.004); useTex(mat.wood, TEX.wood, 3);
+if (TEX.grass){ mat.grass.color.setHex(0xffffff); useTex(mat.grass, TEX.grass, 9); }
+if (TEX.asphalt){ mat.road.color.setHex(0xffffff); useTex(mat.road, TEX.asphalt, 12); mat.road.roughness=0.95; }
+if (TEX.pavers){ mat.pave.color.setHex(0xffffff); useTex(mat.pave, TEX.pavers, 4, 0.01); }
+mat.slab.roughness=0.9; mat.band.roughness=0.4; mat.band.metalness=0.3;
+
+// sky light + reflections (image-based lighting) for day and night
+function makeEnv(day){
+  try {
+    const pm=new THREE.PMREMGenerator(renderer), s=new THREE.Scene(), g=new THREE.SphereGeometry(400,48,24), p=g.attributes.position, col=[];
+    const zen=new THREE.Color(day?0x5f95d0:0x0b1730), hor=new THREE.Color(day?0xdfeaf2:0x2a3954), gnd=new THREE.Color(day?0x6a7357:0x10141c), c=new THREE.Color();
+    for (let i=0;i<p.count;i++){ const y=p.getY(i)/400; if (y>=0) c.copy(hor).lerp(zen, Math.pow(y,0.6)); else c.copy(hor).lerp(gnd, Math.min(1,-y*4)); col.push(c.r,c.g,c.b); }
+    g.setAttribute('color', new THREE.Float32BufferAttribute(col,3));
+    s.add(new THREE.Mesh(g, new THREE.MeshBasicMaterial({vertexColors:true, side:THREE.BackSide})));
+    if (day){ const d=new THREE.Mesh(new THREE.SphereGeometry(18,16,8), new THREE.MeshBasicMaterial({color:0xfff3d8})); d.position.set(-60,110,80).normalize().multiplyScalar(360); s.add(d); }
+    const t=pm.fromScene(s,0.035).texture; pm.dispose(); return t;
+  } catch(e){ return null; }
+}
+const ENV = { day: makeEnv(true), night: makeEnv(false) };
+scene.environment = ENV.day;
+
+const bn = t => String(t).replace(/[0-9]/g, d=>'০১২৩৪৫৬৭৮৯'[d]);
+const groups = { site:new THREE.Group(), found:new THREE.Group(), bldg:new THREE.Group(), interior:new THREE.Group(), labels:new THREE.Group() };
+Object.values(groups).forEach(g=>scene.add(g));
+let CURG=null, CURT=null, GV=null, CURSH=null, SHOPS_ON=true, SHOPN=2;   // build-time target group / tint group / ground variant
+
+function box(w,h,d,x,y,z,m,g,cast){ // x,y,z = min corner
+  const geo = new THREE.BoxGeometry(w,h,d);
+  const T = m && m.userData && m.userData.tile;
+  if (T && geo.attributes && geo.attributes.uv){   // texture in real feet, so tiles/bricks keep their true size on every box
+    const p=geo.attributes.position, n=geo.attributes.normal, uv=geo.attributes.uv, cx=x+w/2, cy=y+h/2, cz=z+d/2;
+    for (let i=0;i<p.count;i++){
+      const X=p.getX(i)+cx, Y=p.getY(i)+cy, Z=p.getZ(i)+cz, ax=Math.abs(n.getX(i)), ay=Math.abs(n.getY(i));
+      if (ax>0.5) uv.setXY(i, Z/T, Y/T); else if (ay>0.5) uv.setXY(i, X/T, Z/T); else uv.setXY(i, X/T, Y/T);
+    }
+    uv.needsUpdate = true;
+  }
+  const mesh = new THREE.Mesh(geo, m);
+  mesh.position.set(x+w/2, y+h/2, z+d/2);
+  mesh.castShadow = cast!==false; mesh.receiveShadow = true;
+  (g||CURG||groups.bldg).add(mesh); return mesh;
+}
+// plan coords: px = east (0..37.5), py = north (0..43)  -> world x = px, z = -py
+function pbox(x0,y0,x1,y1, h, base, m, g, cast){ // plan rectangle
+  const xa=Math.min(x0,x1), xb=Math.max(x0,x1), ya=Math.min(y0,y1), yb=Math.max(y0,y1);
+  return box(xb-xa, h, yb-ya, xa, base, -yb, m, g, cast);
+}
+
+// ---------- building constants ----------
+const BW = 37.5, BD = 43.0;             // building
+const ET = 10/12, IT = 5/12;            // wall thickness
+const PL = 2.0;                         // plinth height
+const FH = 10.0;                        // floor to floor
+const SLAB = 0.5;
+const NF = 3;                           // storeys
+const ROOF = PL + NF*FH;                // 32
+const COLX = [0.5, 13.0, 25.5, 37.0];
+const COLY = [0.4, 11.4, 31.7, 42.6];
+const PX0=-4.5, PX1=40.5, PY0=-2.5, PY1=45.5;   // plot: x -4.5..40.5 ; y -2.5..45.5
+const COLS = [];
+COLX.forEach(x=>COLY.forEach(y=>COLS.push([x,y])));
+COLS.push([13.0,16.7],[25.5,16.7],[13.0,26.3],[25.5,26.3],[0.5,21.4],[37.0,21.4]);
+
+// window list per exterior face: [from, to, sill, head]  (plan coordinate along face)
+const WIN = {
+  N: [[4.0,9.5,3,7],[14.6,16.6,5,7],[20.6,22.6,5,7],[29.0,34.5,3,7]],
+  S: [[4.0,9.5,3,7],[14.6,16.6,5,7],[20.6,22.6,5,7],[29.0,34.5,3,7]],
+  W: [[36.0,40.5,3,7],[23.5,28.5,3,7],[14.5,19.5,3,7],[2.5,7.5,3,7]],   // along py
+  E: [[34.0,39.0,3,7],[24.5,28.5,3.5,7],[14.5,18.5,3.5,7],[3.5,8.5,3,7]]
+};
+// west balconies (cantilever): py ranges
+const BALC = [[28.2,35.1,3.25],[1.1,11.0,3.5]];
+// door from rooms to balconies on west face
+const BALDOOR = [[29.0,31.4],[8.5,11.0]];   // as in the original plan: N balcony from the drawing room, S balcony from the M.bed
+
+// ---------- exterior wall with openings ----------
+function faceWall(face, base, h, openings, r0, r1){
+  // face N/S run along x (px), W/E run along y (py)
+  const along = (r1!==undefined) ? r1 : ((face==='N'||face==='S') ? BW : BD);
+  const ops = openings.filter(o=>o[0]>=(r0||0) && o[1]<=along).sort((a,b)=>a[0]-b[0]);
+  let cur = r0||0;
+  const seg = (a,b,y0,y1)=>{
+    if (b-a<=0.01 || y1-y0<=0.01) return;
+    if (face==='S') pbox(a,0,b,ET, y1-y0, base+y0, mat.wall);
+    if (face==='N') pbox(a,BD-ET,b,BD, y1-y0, base+y0, mat.wall);
+    if (face==='W') pbox(0,a,ET,b, y1-y0, base+y0, mat.wall);
+    if (face==='E') pbox(BW-ET,a,BW,b, y1-y0, base+y0, mat.wall);
+  };
+  ops.forEach(o=>{
+    seg(cur, o[0], 0, h);
+    seg(o[0], o[1], 0, o[2]);
+    seg(o[0], o[1], o[3], h);
+    cur = o[1];
+    windowAt(face, o, base);
+  });
+  seg(cur, along, 0, h);
+}
+const shutterG = new THREE.Group();
+const SHM = { panel: M(0x9aa3ad,{metalness:0.6,roughness:0.35}), rib: M(0x7f8892,{metalness:0.6,roughness:0.4}),
+  rail: M(0x4a5058,{metalness:0.6,roughness:0.4}), bar: M(0x3b4047,{metalness:0.5,roughness:0.4}), lock: M(0xd4a017,{metalness:0.8,roughness:0.3}) };
+function shopFront(a,b,s,hd,base,name){
+  // open shop front: NO glass — when the rolling shutter is up the whole shop is open to the road
+  pbox(-0.9,a,0,b, 1.0, base+hd, M(0x5d6670,{metalness:0.5,roughness:0.4}));    // rolling-shutter box
+  // rolling shutter (corrugated steel) in guide rails, shown pulled down
+  const sx0=-0.62, sx1=-0.5, top=base+hd, bot=base;
+  pbox(sx0-0.08,a-0.25,sx1+0.08,a, top-bot, bot, SHM.rail);                 // guide rail
+  pbox(sx0-0.08,b,sx1+0.08,b+0.25, top-bot, bot, SHM.rail);
+  pbox(sx0,a,sx1,b, top-bot-0.1, bot+0.1, SHM.panel, CURSH||shutterG);
+  for (let h=bot+0.35; h<top-0.1; h+=0.35) pbox(sx0-0.04,a,sx1+0.04,b, 0.06, h, SHM.rib, CURSH||shutterG);   // corrugation ribs
+  pbox(sx0-0.08,a,sx1+0.08,b, 0.25, bot+0.1, SHM.bar, CURSH||shutterG);           // bottom bar
+  pbox(sx0-0.15,(a+b)/2-0.5,sx0-0.06,(a+b)/2+0.5, 0.35, bot+0.5, SHM.lock, CURSH||shutterG);   // handle / lock
+  pbox(-3.2,a-0.3,0,b+0.3, 0.3, base+hd+1.0, mat.accent);                      // 3' canopy
+  // sign board
+  const c=document.createElement('canvas'); c.width=512; c.height=96; const x=c.getContext('2d');
+  x.fillStyle='#1f4f8a'; x.fillRect(0,0,512,96); x.fillStyle='#ffffff'; x.font='700 54px "Hind Siliguri","Noto Sans Bengali","Nirmala UI",sans-serif'; x.textAlign='center'; x.textBaseline='middle'; x.fillText(name,256,52);
+  const t=new THREE.CanvasTexture(c); t.encoding=THREE.sRGBEncoding;
+  const sign=new THREE.Mesh(new THREE.PlaneGeometry(b-a-0.6, 1.1), new THREE.MeshStandardMaterial({map:t, roughness:0.6, clippingPlanes:clip}));
+  sign.position.set(-3.25, base+hd+1.85, -(a+b)/2); sign.rotation.y=-Math.PI/2; (CURG||groups.bldg).add(sign);
+  pbox(-3.2,a-0.3,-3.1,b+0.3, 1.2, base+hd+1.3, mat.accent);
+}
+function windowAt(face, o, base){
+  const [a,b,s,hd] = o, isDoor = s < 0.5, shop = o[4]==='shop';
+  const fr = 0.18;
+  const mk = (x0,y0,x1,y1, yb, hh, m)=>pbox(x0,y0,x1,y1,hh,yb,m);
+  if (shop && face==='W'){ shopFront(a,b,s,hd,base,o[5]); return; }
+  let gx0,gy0,gx1,gy1, ox0,oy0,ox1,oy1; // glass plane + sunshade footprint
+  const mid = ET/2;
+  if (face==='S'){ gx0=a;gx1=b;gy0=mid-0.05;gy1=mid+0.05; ox0=a-0.6;ox1=b+0.6;oy0=-1.6;oy1=0; }
+  if (face==='N'){ gx0=a;gx1=b;gy0=BD-mid-0.05;gy1=BD-mid+0.05; ox0=a-0.6;ox1=b+0.6;oy0=BD;oy1=BD+1.6; }
+  if (face==='W'){ gy0=a;gy1=b;gx0=mid-0.05;gx1=mid+0.05; oy0=a-0.6;oy1=b+0.6;ox0=-1.6;ox1=0; }
+  if (face==='E'){ gy0=a;gy1=b;gx0=BW-mid-0.05;gx1=BW-mid+0.05; oy0=a-0.6;oy1=b+0.6;ox0=BW;ox1=BW+1.6; }
+  mk(gx0,gy0,gx1,gy1, base+s, hd-s, isDoor? mat.door : mat.glass);
+  // frame (top, bottom, sides)
+  const horiz = (face==='N'||face==='S');
+  if (horiz){
+    mk(a,gy0-0.06,b,gy1+0.06, base+s, fr, mat.frame); mk(a,gy0-0.06,b,gy1+0.06, base+hd-fr, fr, mat.frame);
+    mk(a,gy0-0.06,a+fr,gy1+0.06, base+s, hd-s, mat.frame); mk(b-fr,gy0-0.06,b,gy1+0.06, base+s, hd-s, mat.frame);
+    mk((a+b)/2-0.06,gy0-0.06,(a+b)/2+0.06,gy1+0.06, base+s, hd-s, mat.frame);
+  } else {
+    mk(gx0-0.06,a,gx1+0.06,b, base+s, fr, mat.frame); mk(gx0-0.06,a,gx1+0.06,b, base+hd-fr, fr, mat.frame);
+    mk(gx0-0.06,a,gx1+0.06,a+fr, base+s, hd-s, mat.frame); mk(gx0-0.06,b-fr,gx1+0.06,b, base+s, hd-s, mat.frame);
+    mk(gx0-0.06,(a+b)/2-0.06,gx1+0.06,(a+b)/2+0.06, base+s, hd-s, mat.frame);
+  }
+  // sunshade (chajja)
+  // modern deep box-frame surround (charcoal), projecting 1'-3"
+  if (!isDoor){
+    const P=1.25, t=0.3, lo=base+s-t, hi=base+hd+t;
+    if (face==='S'||face==='N'){
+      const y0 = face==='S'? -P : BD, y1 = face==='S'? 0 : BD+P;
+      mk(a-t,y0,b+t,y1, base+hd, t, mat.accent); mk(a-t,y0,b+t,y1, lo, t, mat.accent);
+      mk(a-t,y0,a,y1, lo, hi-lo, mat.accent); mk(b,y0,b+t,y1, lo, hi-lo, mat.accent);
+      mk(a,y0,b,y1, base+hd-0.05, 0.05, mat.led);                       // LED strip in the frame head
+    } else if (face==='E' || (face==='W' && (a>29 || b<12))) {   // west windows behind the fins get no frame
+      const x0 = face==='W'? -P : BW, x1 = face==='W'? 0 : BW+P;
+      mk(x0,a-t,x1,b+t, base+hd, t, mat.accent); mk(x0,a-t,x1,b+t, lo, t, mat.accent);
+      mk(x0,a-t,x1,a, lo, hi-lo, mat.accent); mk(x0,b,x1,b+t, lo, hi-lo, mat.accent);
+      mk(x0,a,x1,b, base+hd-0.05, 0.05, mat.led);
+    }
+  }
+}
+
+// ================= furniture library =================
+const FM = {
+  wood: M(0xb08a63,{roughness:0.6}), dark: M(0x5b3a22,{roughness:0.55}), fabric: M(0x6d7f99,{roughness:0.95}),
+  cushion: M(0xa9b6c9,{roughness:0.95}), bedding: M(0xf3f1ec,{roughness:0.95}), throw: M(0x8a4b3a,{roughness:0.95}),
+  pillow: M(0xe4ddd0,{roughness:0.95}), granite: M(0x2f3033,{roughness:0.35}), cabinet: M(0xd9cbb5,{roughness:0.6}),
+  ceramic: M(0xf7f7f5,{roughness:0.2}), steel: M(0xb8bec4,{roughness:0.3,metalness:0.7}), black: M(0x1e1f22,{roughness:0.4}),
+  rug: M(0xc9b28f,{roughness:1}), tv: M(0x111214,{roughness:0.2,metalness:0.3}), plant: M(0x3f7d34), pot: M(0x7a6a5c)
+};
+useTex(FM.wood, TEX.wood, 2.5); useTex(FM.dark, TEX.wood, 2.5); useTex(FM.cabinet, TEX.wood, 3);
+
+// colour-coded categories: [key, coded colour, realistic colour, legend label or '']
+const FCAT = [
+  ['bedFrame',0xff7043,0xb08a63,'খাট'], ['headboard',0xd84315,0x5b3a22,''], ['bedding',0xfff3e0,0xf3f1ec,''],
+  ['throw',0xff5252,0x8a4b3a,''], ['sideTable',0xffa000,0x5b3a22,'সাইড টেবিল'],
+  ['wardrobe',0x8e24aa,0xd9cbb5,'আলমারি / ওয়াল কেবিনেট'], ['dressing',0xec407a,0x5b3a22,'ড্রেসিং টেবিল'], ['stool',0xf8bbd0,0x6d7f99,''],
+  ['mirror',0xb3e5fc,0xcfe3ee,''], ['desk',0x00897b,0xb08a63,'কম্পিউটার টেবিল'], ['deskSide',0x00695c,0x5b3a22,''],
+  ['sofa',0x1e88e5,0x6d7f99,'সোফা'], ['cushion',0x90caf9,0xa9b6c9,''], ['coffee',0x0d47a1,0x2f3033,'সেন্টার টেবিল'],
+  ['diningTop',0xfdd835,0xb08a63,'ডাইনিং টেবিল'], ['tableLeg',0xf57f17,0x5b3a22,''],
+  ['chairSeat',0xff6f00,0xb08a63,'চেয়ার'], ['chairLeg',0xbf360c,0x5b3a22,''], ['sideboard',0x7cb342,0x5b3a22,'সাইডবোর্ড'],
+  ['counterCab',0x43a047,0xd9cbb5,'কিচেন কাউন্টার'], ['counterTop',0x1b5e20,0x2f3033,''], ['upperCab',0x66bb6a,0xd9cbb5,''],
+  ['fridge',0x80deea,0xf7f7f5,'ফ্রিজ'], ['sanitary',0x29b6f6,0xf7f7f5,'কমোড / বেসিন / শাওয়ার'],
+  ['shopCounter',0xe53935,0xd9cbb5,'দোকানের কাউন্টার'], ['shelf',0x6d4c41,0xd9cbb5,'দোকানের তাক'], ['rug',0xffcc80,0xc9b28f,'']
+];
+FCAT.forEach(([k,c])=>{ FM[k] = M(c,{roughness:0.7}); });
+FM.mirror.roughness = 0.05; FM.mirror.metalness = 0.6; FM.sanitary.roughness = 0.2; FM.fridge.roughness = 0.25;
+// floor tints per room type (shown in colour-coded mode)
+const TINT = { bed:[0xffe0b2,'বেডরুমের মেঝে'], draw:[0xbbdefb,'ড্রয়িং এর মেঝে'], dine:[0xfff59d,'ডাইনিং এর মেঝে'], kit:[0xc8e6c9,'রান্নাঘরের মেঝে'],
+  bath:[0xb2ebf2,'বাথরুমের মেঝে'], stair:[0xd1c4e9,'সিঁড়ি'], shop:[0xffcdd2,'দোকানের মেঝে'], park:[0xcfd8dc,'পার্কিং এর মেঝে'] };
+const TM = {}; Object.keys(TINT).forEach(k=>TM[k]=M(TINT[k][0],{roughness:0.9}));
+const tintG = new THREE.Group(); scene.add(tintG);
+function tint(x0,y0,x1,y1,k,base,mir){ const Y=y=>mir?BD-y:y; pbox(x0,Y(y0),x1,Y(y1),0.02,base,TM[k],CURT||tintG,false); }
+function tintHalf(fb, mir, all){
+  const b=fb+0.06;
+  if (all){ tint(ET,31.9,12.6,BD-ET,'bed',b,mir); tint(ET,22.0,12.6,31.5,'draw',b,mir); }
+  tint(13.0,26.5,25.5,37.2,'dine',b,mir); tint(25.9,31.9,BW-ET,BD-ET,'bed',b,mir); tint(28.7,22.0,BW-ET,31.4,'kit',b,mir);
+  tint(13.0,37.6,18.9,BD-ET,'bath',b,mir); tint(19.3,37.6,25.5,BD-ET,'bath',b,mir);
+}
+
+function cyl(x,y,r,h,base,m,g){ const c=new THREE.Mesh(new THREE.CylinderGeometry(r,r,h,16), m); c.position.set(x, base+h/2, -y); c.castShadow=true; c.receiveShadow=true; g.add(c); return c; }
+// all builders take plan coords; Y(y) mirrors for the south half
+function mkF(fb, g, mir){
+  const Y = y => mir ? BD - y : y;
+  const B = (x0,y0,x1,y1,h,base,m)=>pbox(x0,Y(y0),x1,Y(y1),h,fb+0.05+base,m,g);
+  const C = (x,y,r,h,base,m)=>cyl(x,Y(y),r,h,fb+0.05+base,m,g);
+  return {
+    B, C,
+    bed(x0,y0,x1,y1,head,skip0){ // head: 'W' or 'E' (along x)
+      B(x0,y0,x1,y1,1.1,0,FM.bedFrame); B(x0+0.1,y0+0.1,x1-0.1,y1-0.1,0.7,1.1,FM.bedding);
+      const hx0 = head==='W'?x0:x1-0.35, hx1 = head==='W'?x0+0.35:x1;
+      B(hx0,y0-0.1,hx1,y1+0.1,3.6,0,FM.headboard);                              // headboard
+      const px0 = head==='W'?x0+0.5:x1-2.0, px1 = px0+1.5, ym=(y0+y1)/2;
+      B(px0,y0+0.3,px1,ym-0.15,0.45,1.8,FM.pillow); B(px0,ym+0.15,px1,y1-0.3,0.45,1.8,FM.pillow);
+      const tx0 = head==='W'?x1-2.2:x0+0.15, tx1 = head==='W'?x1-0.15:x0+2.2;
+      B(tx0,y0+0.05,tx1,y1-0.05,0.12,1.8,FM.throw);                         // throw blanket
+      // side tables + lamps
+      const sx0 = head==='W'?x0:x1-1.6, sx1 = sx0+1.6;
+      [[y0-1.8,y0-0.2],[y1+0.2,y1+1.8]].forEach(([a,b],i)=>{ if (skip0 && i===0) return; B(sx0,a,sx1,b,1.9,0,FM.sideTable); C((sx0+sx1)/2,(a+b)/2,0.15,0.9,1.9,FM.steel); C((sx0+sx1)/2,(a+b)/2,0.45,0.6,2.8,FM.pillow); });
+    },
+    wardrobe(x0,y0,x1,y1){ B(x0,y0,x1,y1,7.0,0,FM.wardrobe); const vertical = Math.abs(y1-y0)>Math.abs(x1-x0);
+      if (vertical){ const xf = (x0<6||x0>30&&x0<34)? x1+0.02 : x0-0.06; for(let y=y0+1; y<y1-0.5; y+=1.5) B(xf,y,xf+0.04,y+0.06,1.2,3.0,FM.steel); } },
+    sofa(x0,y0,x1,y1,back){ // back: 'W','E','N','S' (plan); seats run along the long side
+      B(x0,y0,x1,y1,1.4,0,FM.sofa);
+      const t=0.75, a=0.55;
+      if (back==='W'){ B(x0,y0,x0+t,y1,2.9,0,FM.sofa); B(x0,y0,x1,y0+a,2.2,0,FM.sofa); B(x0,y1-a,x1,y1,2.2,0,FM.sofa); for(let y=y0+a; y<y1-a-0.1; y+=(y1-y0-2*a)/3) B(x0+t,y+0.05,x1-0.1,y+(y1-y0-2*a)/3-0.05,0.35,1.4,FM.cushion); }
+      if (back==='E'){ B(x1-t,y0,x1,y1,2.9,0,FM.sofa); B(x0,y0,x1,y0+a,2.2,0,FM.sofa); B(x0,y1-a,x1,y1,2.2,0,FM.sofa); for(let y=y0+a; y<y1-a-0.1; y+=(y1-y0-2*a)/3) B(x0+0.1,y+0.05,x1-t,y+(y1-y0-2*a)/3-0.05,0.35,1.4,FM.cushion); }
+      if (back==='N'){ B(x0,y1-t,x1,y1,2.9,0,FM.sofa); B(x0,y0,x0+a,y1,2.2,0,FM.sofa); B(x1-a,y0,x1,y1,2.2,0,FM.sofa); for(let x=x0+a; x<x1-a-0.1; x+=(x1-x0-2*a)/2) B(x+0.05,y0+0.1,x+(x1-x0-2*a)/2-0.05,y1-t,0.35,1.4,FM.cushion); }
+      if (back==='S'){ B(x0,y0,x1,y0+t,2.9,0,FM.sofa); B(x0,y0,x0+a,y1,2.2,0,FM.sofa); B(x1-a,y0,x1,y1,2.2,0,FM.sofa); for(let x=x0+a; x<x1-a-0.1; x+=(x1-x0-2*a)/2) B(x+0.05,y0+t,x+(x1-x0-2*a)/2-0.05,y1-0.1,0.35,1.4,FM.cushion); }
+    },
+    table(x0,y0,x1,y1,h,top){ B(x0,y0,x1,y1,0.15,h-0.15,top||FM.diningTop); [[x0+0.1,y0+0.1],[x1-0.3,y0+0.1],[x0+0.1,y1-0.3],[x1-0.3,y1-0.3]].forEach(([x,y])=>B(x,y,x+0.2,y+0.2,h-0.15,0,FM.tableLeg)); },
+    chair(cx,cy,backSide){ B(cx-0.75,cy-0.75,cx+0.75,cy+0.75,0.15,1.45,FM.chairSeat);
+      [[-0.7,-0.7],[0.55,-0.7],[-0.7,0.55],[0.55,0.55]].forEach(([dx,dy])=>B(cx+dx,cy+dy,cx+dx+0.15,cy+dy+0.15,1.45,0,FM.chairLeg));
+      if (backSide==='N') B(cx-0.75,cy+0.6,cx+0.75,cy+0.75,1.6,1.6,FM.chairSeat);
+      if (backSide==='S') B(cx-0.75,cy-0.75,cx+0.75,cy-0.6,1.6,1.6,FM.chairSeat);
+      if (backSide==='W') B(cx-0.75,cy-0.75,cx-0.6,cy+0.75,1.6,1.6,FM.chairSeat);
+      if (backSide==='E') B(cx+0.6,cy-0.75,cx+0.75,cy+0.75,1.6,1.6,FM.chairSeat); },
+    dressing(x0,y0,x1,y1,wall){ // table + mirror on the wall side + stool
+      B(x0,y0,x1,y1,2.5,0,FM.dressing); B(x0-0.03,y0-0.03,x1+0.03,y1+0.03,0.08,2.5,FM.dressing);
+      const mw = { N:[x0+0.3,y1-0.12,x1-0.3,y1], S:[x0+0.3,y0,x1-0.3,y0+0.12], E:[x1-0.12,y0+0.3,x1,y1-0.3], W:[x0,y0+0.3,x0+0.12,y1-0.3] }[wall];
+      B(mw[0],mw[1],mw[2],mw[3],3.0,2.6,FM.mirror);
+      const cx=(x0+x1)/2, cy=(y0+y1)/2, o={N:[0,-1.6],S:[0,1.6],E:[-1.6,0],W:[1.6,0]}[wall];
+      C(cx+o[0], cy+o[1], 0.6, 1.5, 0, FM.stool);
+    },
+    desk(x0,y0,x1,y1,wall){ // computer table: top, side cabinet, monitor, keyboard, chair
+      B(x0,y0,x1,y1,0.12,2.4,FM.desk);
+      const side = (wall==='N'||wall==='S') ? [x1-1.2,y0,x1,y1] : [x0,y1-1.2,x1,y1];
+      B(side[0],side[1],side[2],side[3],2.4,0,FM.deskSide);
+      const leg = (wall==='N'||wall==='S') ? [x0,y0,x0+0.15,y1] : [x0,y0,x1,y0+0.15];
+      B(leg[0],leg[1],leg[2],leg[3],2.4,0,FM.deskSide);
+      const cx=(x0+x1)/2, cy=(y0+y1)/2;
+      const mon = { N:[cx-0.9,y1-0.5,cx+0.9,y1-0.4], S:[cx-0.9,y0+0.4,cx+0.9,y0+0.5], E:[x1-0.5,cy-0.9,x1-0.4,cy+0.9], W:[x0+0.4,cy-0.9,x0+0.5,cy+0.9] }[wall];
+      B(mon[0],mon[1],mon[2],mon[3],1.1,2.75,FM.tv);
+      const kb = { N:[cx-0.6,y0+0.4,cx+0.6,y0+0.9], S:[cx-0.6,y1-0.9,cx+0.6,y1-0.4], E:[x0+0.4,cy-0.6,x0+0.9,cy+0.6], W:[x1-0.9,cy-0.6,x1-0.4,cy+0.6] }[wall];
+      B(kb[0],kb[1],kb[2],kb[3],0.05,2.52,FM.black);
+      const ch = { N:[cx,y0-0.9,'S'], S:[cx,y1+0.9,'N'], E:[x0-0.9,cy,'W'], W:[x1+0.9,cy,'E'] }[wall];
+      this.chair(ch[0],ch[1],ch[2]);
+    },
+    rug(x0,y0,x1,y1){ B(x0,y0,x1,y1,0.03,0,FM.rug); },
+    plant(x,y){ C(x,y,0.55,1.3,0,FM.pot); const p=new THREE.Mesh(new THREE.SphereGeometry(0.95,10,8), FM.plant); p.position.set(x, fb+0.05+2.2, -Y(y)); p.castShadow=true; g.add(p); },
+    wc(x,y,face){ // face: direction the user faces ('S' etc.), placed against opposite wall
+      const d = face==='S'? -1 : 1;
+      B(x-0.7,y-0.15*d-(d<0?0:0),x+0.7,y+0.5*d,2.6,0,FM.sanitary);       // tank
+      B(x-0.6,y+0.5*d,x+0.6,y+2.1*d,1.3,0,FM.sanitary);                    // bowl
+      B(x-0.62,y+0.5*d,x+0.62,y+2.15*d,0.08,1.3,FM.sanitary); },
+    basin(x,y,face){ const d = face==='S'?-1:1; B(x-0.9,y,x+0.9,y+1.4*d,0.5,2.3,FM.sanitary); C(x,y+0.7*d,0.06,2.3,0,FM.steel); C(x,y+0.15*d,0.05,0.4,2.8,FM.steel); },
+    shower(x0,y0,x1,y1){ B(x0,y0,x1,y1,0.15,0,FM.sanitary); const gl=mat.glassRail; B(x1-0.05,y0,x1,y1,6.5,0,gl); C((x0+x1)/2,(y0+y1)/2,0.25,0.05,6.6,FM.steel); },
+    counter(x0,y0,x1,y1){ B(x0,y0,x1,y1,2.8,0,FM.counterCab); B(x0-0.05,y0-0.05,x1+0.05,y1+0.05,0.12,2.8,FM.counterTop); },
+    upper(x0,y0,x1,y1){ B(x0,y0,x1,y1,2.2,5.0,FM.upperCab); },
+    stove(x,y){ B(x-1.2,y-0.9,x+1.2,y+0.9,0.15,2.92,FM.black); C(x-0.55,y,0.32,0.06,3.07,FM.steel); C(x+0.55,y,0.32,0.06,3.07,FM.steel); },
+    sink(x,y){ B(x-1.0,y-0.75,x+1.0,y+0.75,0.06,2.92,FM.steel); C(x,y+0.6,0.06,0.9,2.92,FM.steel); },
+    fridge(x0,y0,x1,y1){ B(x0,y0,x1,y1,5.8,0,FM.fridge); B(x0-0.02,y0-0.02,x1+0.02,y1+0.02,0.05,3.9,FM.steel); },
+    tvunit(x0,y0,x1,y1,tvSide){ B(x0,y0,x1,y1,1.6,0,FM.dark);
+      if (tvSide==='N') B(x0+0.6,y1-0.2,x1-0.6,y1-0.1,2.4,2.2,FM.tv); else if (tvSide==='S') B(x0+0.6,y0+0.1,x1-0.6,y0+0.2,2.4,2.2,FM.tv);
+      else if (tvSide==='E') B(x1-0.2,y0+0.6,x1-0.1,y1-0.6,2.4,2.2,FM.tv); else B(x0+0.1,y0+0.6,x0+0.2,y1-0.6,2.4,2.2,FM.tv); }
+  };
+}
+// One flat (north half coordinates; mirror=true builds the south flat)
+function furnishHalf(fb, g, mir, o){
+  const F = mkF(fb, g, mir);
+  const sb = mir ? 'S' : 'N';   // "toward the outer (north) wall" in north-half terms, mirrored for the south
+  const nb = mir ? 'N' : 'S';
+  if (o.all){
+    // master bedroom 12'x10'-6": bed + wall cabinet + dressing table + computer table (doors on the east wall kept clear)
+    F.bed(0.9,34.6,7.5,39.6,'W', mir); F.rug(3.0,33.9,9.0,40.6);
+    F.wardrobe(3.6,31.95,8.0,33.95);          // wall cabinet 4'-5" x 2' on the south wall
+    F.dressing(7.4,40.6,10.2,42.15,'N');      // dressing table 2'-9" x 1'-6" on the north wall
+    F.desk(10.6,35.5,12.55,38.9,'E');         // computer table 3'-5" x 2' between the two east-wall doors
+    // drawing room: 3-seat + 2-seat sofa, armchair, coffee table, rug, plant
+    F.rug(3.6,24.0,9.6,29.6);
+    F.sofa(0.9,22.4,3.7,28.6,'W'); F.sofa(4.1,29.2,9.4,31.4, mir?'N':'N');
+    F.sofa(9.2,26.0,11.6,28.4,'E'); F.table(5.0,25.4,8.4,27.8,1.5,FM.coffee); F.plant(10.6,30.6);
+  }
+  // dining (centre bay): 6-seat table + chairs, sideboard, plant
+  const ty0 = mir? 31.0 : 30.6;
+  F.table(16.4,ty0,22.4,ty0+3.0,2.5);
+  [17.4,19.4,21.4].forEach(x=>{ F.chair(x,ty0-0.85,'S'); F.chair(x,ty0+3.85,'N'); });
+  F.B(14.0,35.6,18.4,37.0,2.8,0,FM.sideboard);                                     // sideboard on stair-side wall
+  F.plant(24.6,27.4);
+  // bedroom (east) 11'x10'-3": bed + wall cabinet + dressing table + computer table (door on the west wall kept clear)
+  F.bed(30.2,35.0,36.6,40.0,'E');
+  F.wardrobe(25.95,36.0,27.95,41.0);       // wall cabinet 5' x 2' on the west wall
+  F.dressing(31.0,31.95,34.0,33.45,'S');   // dressing table 3' x 1'-6" on the south wall
+  F.desk(28.0,40.15,30.8,42.15,'N');       // computer table 2'-10" x 2' on the north wall
+  // kitchen (east): L counter + upper cabinets, stove, sink, fridge
+  F.counter(34.7,22.2,36.6,30.6); F.counter(29.4,22.1,34.7,24.1);
+  F.upper(35.5,22.2,36.6,30.6); F.stove(35.65,27.8); F.sink(35.65,24.6); F.fridge(28.8,25.6,31.0,27.8);
+  // baths (north row): WC, basin, shower
+  if (o.all){ F.wc(18.0,42.1,'S'); F.basin(16.0,42.1,'S'); F.shower(13.1,37.7,15.6,39.3); }
+  else { F.wc(18.0,42.1,'S'); F.basin(15.4,37.7,'N'); }   // ground: shop toilet (door on the outer wall)
+  F.wc(23.9,42.1,'S'); F.basin(20.9,42.1,'S');
+}
+function balconyFurniture(fb, g){
+  const F=mkF(fb,g,false);
+  // keep the space in front of each balcony door free: furniture at the far end
+  F.chair(-1.6, 33.9,'W'); F.plant(-1.6, 32.3);                                 // north balcony (door 29.0-31.4)
+  F.chair(-1.75, 2.4,'W'); F.chair(-1.75, 5.6,'W'); F.table(-2.35,3.4,-1.15,4.6,1.8);  // south balcony (door 8.5-11.0)
+}
+function shopFurniture(fb, g, s3){
+  const F=mkF(fb,g,false);
+  let seed=7; const rnd=()=>{ seed=(seed*16807)%2147483647; return (seed-1)/2147483646; };
+  const PROD=[0xe53935,0xfdd835,0x43a047,0x1e88e5,0xff7043,0x8e24aa,0xffffff,0x6d4c41,0x00acc1,0xf06292,0xffa000,0x7cb342];
+  const pm = {}; const P = c => pm[c] || (pm[c]=M(c,{roughness:0.6}));
+  // fill a shelf run with packets, boxes and bottles; along y (x fixed) or along x (y fixed)
+  function stock(x0,x1,y0,y1,base,alongY){
+    let p = alongY ? y0 : x0, end = alongY ? y1 : x1;
+    while (p < end-0.35){
+      const w = 0.35+rnd()*0.45, h = 0.45+rnd()*0.7, c = PROD[Math.floor(rnd()*PROD.length)];
+      const q = Math.min(p+w, end);
+      if (rnd()<0.3){ const r=Math.min(0.2,(q-p)/2); alongY ? F.C((x0+x1)/2,(p+q)/2,r,h,base,P(c)) : F.C((p+q)/2,(y0+y1)/2,r,h,base,P(c)); }
+      else alongY ? F.B(x0,p,x1,q,h,base,P(c)) : F.B(p,y0,q,y1,h,base,P(c));
+      p = q + 0.06;
+    }
+  }
+  function shelves(x0,y0,x1,y1,alongY){   // rack with 4 boards + products
+    F.B(x0,y0,x1,y1,7.4,0,FM.shelf);
+    for (const h of [0.2,1.9,3.6,5.3]){ alongY ? F.B(x0-0.05,y0,x1,y1,0.1,h,FM.shelf) : F.B(x0,y0-0.05,x1,y1,0.1,h,FM.shelf); stock(x0+0.05,x1-0.05,y0+0.05,y1-0.05,h+0.1,alongY); }
+  }
+  // ---- SHOP-1: MUDI DOKAN (grocery) — fully stocked, visible when the shutter is up ----
+  (function(y0,y1){
+    shelves(11.4,y0+0.3,12.55,y1-0.3,true);                               // back wall rack
+    shelves(4.2,y1-1.15,10.9,y1-0.1,false);                                // north side rack
+    shelves(4.2,y0+0.1,10.9,y0+1.15,false);                                // south side rack
+    F.B(1.0,y0+2.0,2.6,y1-3.2,3.0,0,FM.shopCounter);                       // front counter
+    F.B(0.95,y0+1.95,2.65,y1-3.15,0.1,3.0,FM.counterTop);
+    for (let y=y0+2.4; y<y1-3.5; y+=0.9) F.C(1.8,y,0.32,1.0,3.1,M(0xd7ecf5,{transparent:true,opacity:0.55,roughness:0.05}));   // glass jars
+    for (let y=y0+2.4; y<y1-3.5; y+=0.9) F.C(1.8,y,0.26,0.45,3.12,P(PROD[Math.floor(rnd()*PROD.length)]));                // sweets inside
+    F.B(1.2,y1-3.0,2.4,y1-2.2,0.25,3.1,FM.steel);                            // weighing scale
+    [[1.2,y1-1.9],[2.4,y1-1.9],[1.2,y1-0.8],[2.4,y1-0.8]].forEach(([x,y],i)=>{ F.C(x+0.4,y,0.55,1.8,0,M(0xd8c39a,{roughness:1})); F.C(x+0.4,y,0.5,0.06,1.8,P([0xffffff,0xfbc02d,0xe57373,0x8d6e63][i])); });  // open sacks: rice, dal, chilli, atta
+    F.chair(3.6,(y0+y1)/2,'E');                                             // shopkeeper behind the counter
+  })(0.9,11.2);
+  // ---- SHOP-2: CHA ER DOKAN (tea stall) ----
+  (function(y0,y1){
+    F.B(1.0,y0+0.5,3.0,y0+5.0,3.0,0,FM.shopCounter); F.B(0.95,y0+0.45,3.05,y0+5.05,0.1,3.0,FM.counterTop);   // tea counter at the front
+    F.C(1.6,y0+1.3,0.45,1.3,3.1,FM.steel); F.C(1.6,y0+1.3,0.12,0.4,4.4,FM.black);                              // samovar / kettle
+    F.B(2.0,y0+2.3,2.9,y0+3.2,0.25,3.1,FM.black); F.C(2.45,y0+2.75,0.3,0.6,3.35,FM.steel);                     // gas stove + pot
+    for (let y=y0+3.6; y<y0+4.9; y+=0.35) F.C(1.4,y,0.11,0.25,3.1,M(0xfff8e1,{roughness:0.3}));                 // cups
+    for (let y=y0+3.6; y<y0+4.9; y+=0.45) F.C(2.5,y,0.2,0.7,3.1,M(0xd7ecf5,{transparent:true,opacity:0.55,roughness:0.05}));  // biscuit jars
+    shelves(11.4,y0+0.3,12.55,y1-0.3,true);                               // back shelf: tea, biscuits, cigarettes, bananas
+    // customer benches along the side walls + small tables
+    F.B(4.0,y1-1.4,10.6,y1-0.3,1.5,0,FM.wood); F.B(4.0,y0+0.3,10.6,y0+1.4,1.5,0,FM.wood);
+    F.table(6.0,y1-3.4,9.0,y1-2.0,2.4); F.table(6.0,y0+2.0,9.0,y0+3.4,2.4);
+    F.chair(3.6,y0+2.8,'E');
+    // hanging banana bunch
+    F.C(3.4,y0+0.8,0.35,1.1,5.6,P(0xfdd835));
+  })(11.6,21.6);
+  // ---- SHOP-3: general shop (only in the 3-shop option) ----
+  if (s3) (function(y0,y1){
+    F.B(6.0,y0+0.8,7.6,y1-2.6,3.2,0,FM.shopCounter);
+    shelves(11.4,y0+0.3,12.55,y1-0.3,true);
+    F.chair(8.6,(y0+y1)/2,'E');
+  })(22.0,31.3);
+}
+
+// ---------- floors ----------
+const floorBase = k => PL + k*FH;           // top of slab of floor k
+const interiorByFloor = [];
+const DOORLBL = [];   // [code, x, y, floor]
+
+function buildFloor(k, shops){
+  const s3 = shops===3;   // ground: 3 shops (shop-3 in the north bay) or 2 shops (north bay = lobby open to parking)
+  const fb = floorBase(k);
+  const wh = FH - SLAB;
+  if (k===0 && s3) pbox(-0.3,26.3,12.6,31.7, PL, 0, mat.plinth);   // SHOP-3 floor at plinth level
+  const park = (k===0);            // ground: north half = open car parking
+  const PKY = 26.3;
+  // slab (floor of this storey) with edge band
+  if (k===0){
+    pbox(-0.3,-0.3,BW+0.3,26.3, PL, 0, mat.plinth);       // plinth under ground flat / core
+    pbox(-0.3,26.3,BW+0.3,BD+0.3, 0.5, 0, mat.plinth);    // low parking slab (+6")
+  } else {
+    pbox(-0.4,-0.4,BW+0.4,BD+0.4, SLAB, fb-SLAB, mat.band);  // slab edge band
+  }
+  // walls with windows
+  if (!park) faceWall('N', fb, wh, WIN.N);
+  faceWall('S', fb, wh, park && shops ? WIN.S.filter(o=>o[0]!==14.6).concat([[14.2,16.7,0.01,7.0]]) : WIN.S);   // ground: shop-keepers' toilet door from outside (south)
+  // west wall: balcony doors on upper + ground floors as doors, rest windows
+  const wOps = WIN.W.map(o=>o.slice());
+  // replace windows near balconies by doors
+  const westOps = wOps.filter(o=>!BALDOOR.some(d=>!(o[1]<d[0]||o[0]>d[1])));
+  BALDOOR.forEach(d=>westOps.push([d[0],d[1],0.01,7]));
+  let wo = westOps;
+  if (k===0){ wo = shops ? [[1.4,10.6,0.01,8.0,'shop','মুদি দোকান'],[12.2,20.9,0.01,8.0,'shop','চায়ের দোকান']].concat(s3?[[22.5,30.8,0.01,8.0,'shop','দোকান-৩']]:[[23.0,25.5,3,7]])
+                       : [[2.5,7.5,3,7],[14.5,19.5,3,7]]; }   // no shops: same windows as upper floors (no balcony); no separate west entrance  // ground: 3 shops facing the West main road (one per column bay)
+  faceWall('W', fb, wh, wo, 0, park ? (s3?31.7:PKY) : undefined);
+  faceWall('E', fb, wh, WIN.E, 0, park ? PKY : undefined);
+  if (park){ pbox(17.0,PKY,17.6,PKY+0.42, wh, fb, mat.wPark); pbox(17.6,PKY,20.4,PKY+0.42, wh, fb, mat.wPark, gParkOnly); pbox(20.4,PKY,28.7,PKY+0.42, wh, fb, mat.wPark);
+             pbox(28.7,PKY,BW-ET,PKY+0.42, wh, fb, mat.wPark, gParkOnly); }   // gParkOnly pieces open up for the temp unit (south door, kitchen)   // east piece is removed when the temp unit's kitchen joins the store   // ground: lobby + stair landing OPEN to parking (no wall from x 0 to 17)
+
+  // west balconies with railings
+  BALC.forEach(b=>{
+    const [y0,y1,d] = b;
+    if (park) return;
+    if (k>0) pbox(-d,y0,0,y1, 0.45, fb-0.45, mat.band);
+    else pbox(-d,y0,0,y1, PL, 0, mat.plinth);
+    // glass railing with steel top rail + planter
+    pbox(-d,y0,-d+0.08,y1, 3.2, fb, mat.glassRail, groups.bldg, false);
+    pbox(-d,y0,0,y0+0.08, 3.2, fb, mat.glassRail, groups.bldg, false);
+    pbox(-d,y1-0.08,0,y1, 3.2, fb, mat.glassRail, groups.bldg, false);
+    pbox(-d-0.05,y0,-d+0.15,y1, 0.15, fb+3.2, mat.rail); pbox(-d,y0-0.05,0,y0+0.15, 0.15, fb+3.2, mat.rail); pbox(-d,y1-0.15,0,y1+0.05, 0.15, fb+3.2, mat.rail);
+    pbox(-d+0.2,y0+0.3,-d+1.4,y0+2.0, 1.4, fb, mat.pot); { const p=new THREE.Mesh(new THREE.SphereGeometry(1.0,10,8), mat.plant); p.position.set(-d+0.8, fb+2.2, -(y0+1.15)); p.castShadow=true; groups.bldg.add(p); }
+  });
+
+  // interior floor finish + walls + furniture (for cut view)
+  const ig = new THREE.Group(); (CURG||groups.interior).add(ig); interiorByFloor.push(ig);
+  const N = (y0,y1)=> park && Math.min(y0,y1)>=PKY-0.05;
+  const iw = (x0,y0,x1,y1,m)=>{ if (park && Math.min(y0,y1)>=PKY-0.3) return; const ya=Math.min(y0,y1), yb=park?Math.min(Math.max(y0,y1),PKY):Math.max(y0,y1); pbox(x0,ya,x1,yb, wh, fb, m||mat.wallIn, ig); };
+  const fl = (x0,y0,x1,y1,m)=>{ if (N(y0,y1)) return; pbox(x0,y0,x1,park?Math.min(y1,PKY):y1, 0.05, fb, m, ig, false); };
+  fl(ET,ET,BW-ET,BD-ET, mat.floorA);
+  fl(13.2,37.4,25.3,BD-ET, mat.bath); fl(13.2,ET,25.3,5.6, mat.bath);
+  fl(28.7,11.7,BW-ET,31.4, mat.kitchen);
+  if (park){ pbox(s3?12.6:0,PKY,BW,31.7, 0.06, 0.5, mat.pave, undefined, false); pbox(0,31.7,BW,BD, 0.06, 0.5, mat.pave, undefined, false); if (shops) pbox(ET,22.0,12.6,s3?31.3:PKY, 0.05, fb, mat.floorA, ig, false); }   // shop-3 floor, or the lobby where shop-3 would be
+  if (park) for (let i=0;i<3;i++) pbox(s3?13.0:ET,PKY+i*0.9,16.8,PKY+(i+1)*0.9, 0.5+(PL-0.5)*(3-i)/3, 0, mat.stair);  // steps up to the passage door
+  // main partitions — as in the original plan:
+  //  * drawing room is OPEN to the dining (no wall), entered by the main door from the stair landing
+  //  * M.bed door from the dining (on its east wall); the 6'x5' Bath is ATTACHED to the M.bed (door from M.bed)
+  //  * Bed (east) door from the dining (on its west wall); C.Bath and kitchen doors from the dining
+  const SH = park && shops ? mat.wShop : undefined;
+  // x = 12.8 line, north flat
+  iw(12.6,41.9,13.0,BD-ET); iw(12.6,35.1,13.0,39.6); iw(12.6,31.7,13.0,32.1);   // att.bath door 39.6-41.9, M.bed door 32.1-35.1
+  if (!park){ iw(12.6,25.3,13.0,26.5); iw(12.6,22.0,13.0,22.4); }               // main door from landing 22.4-25.3 (drawing open to dining above 26.5)
+  // x = 12.8 line, south flat (mirror)
+  if (!park || !shops){ iw(12.6,ET,13.0,1.1); iw(12.6,3.4,13.0,7.9); iw(12.6,10.9,13.0,11.3);
+              iw(12.6,16.5,13.0,17.7); iw(12.6,20.6,13.0,21.0); }               // att.bath door 1.1-3.4, M.bed door 7.9-10.9, main door 17.7-20.6
+  else { iw(12.6,ET,13.0,21.6,SH); iw(ET,11.2,12.6,11.6,SH);
+    if (s3){ pbox(12.6,21.6,13.0,31.7, wh, fb, mat.wShop, ig); pbox(ET,31.3,13.0,31.7, wh, fb, mat.wShop, ig); } }   // ground: shops closed at the back (2 shops: north bay is an open lobby)
+  iw(ET,31.5,12.6,31.9);                                // M.bed | drawing (N): solid
+  if (!park || !shops) iw(ET,11.2,12.6,11.6);           // M.bed | drawing (S): solid
+  iw(ET,21.6,12.8,22.0,SH);                             // between the two drawing rooms (ground: shop 2 | shop 3)
+  if (park && shops){ iw(12.8,16.5,13.6,16.9,mat.wCore); iw(16.6,16.5,25.7,16.9,mat.wCore); pbox(13.6,16.6,16.6,16.8, 7.0, fb, mat.door, ig); } else iw(12.8,16.5,25.7,16.9,mat.wCore);   // stair box (ground: flat door 13.6-16.6)
+  if (park){ iw(17.0,26.1,17.6,26.5,mat.wCore); pbox(17.6,26.1,20.4,26.5, wh, fb, mat.wCore, gParkOnly); iw(20.4,26.1,25.7,26.5,mat.wCore); } else iw(12.8,26.1,25.7,26.5,mat.wCore);
+  // x = 25.7 line: Bed (east) | dining, door 32.1-35.1 (N) and 7.9-10.9 (S)
+  iw(25.5,35.1,25.9,BD-ET); iw(25.5,31.7,25.9,32.1);
+  iw(25.5,ET,25.9,7.9); iw(25.5,10.9,25.9,11.3);
+  iw(25.9,31.5,BW-ET,31.9); iw(25.9,11.2,BW-ET,11.6);    // Bed | kitchen: solid
+  iw(28.3,14.0,28.7,21.6); iw(28.3,22.0,28.7,28.8);      // kitchen W wall
+  iw(28.7,21.6,BW-ET,22.0);                             // kitchen | kitchen
+  iw(13.0,37.2,18.9,37.6); iw(19.3,37.2,23.0,37.6);     // baths N: att.bath closed on dining side; C.Bath door 23-25.5
+  iw(18.9,37.6,19.3,BD-ET);
+  iw(13.0,5.4,18.9,5.8); iw(19.3,5.4,23.0,5.8);   // baths S (ground: this bath is the shop toilet, closed from the flat)
+  iw(18.9,ET,19.3,5.4);
+  // ---------- doors (leaf panels) ----------
+  const DUP = [ // [x0,y0,x1,y1,code]  plan coords (wall-thickness rectangles)
+    [12.65,22.4,12.95,25.3,'D1'],[12.65,17.7,12.95,20.6,'D1'],                 // flat main doors (stair landing -> drawing)
+    [12.65,32.1,12.95,35.1,'D2'],[12.65,7.9,12.95,10.9,'D2'],                  // M.bed (from dining)
+    [25.55,32.1,25.85,35.1,'D2'],[25.55,7.9,25.85,10.9,'D2'],                  // Bed east (from dining)
+    [12.65,39.6,12.95,41.9,'D3'],[12.65,1.1,12.95,3.4,'D3'],                   // attached bath (from M.bed)
+    [28.35,28.8,28.65,31.4,'D3'],[28.35,11.6,28.65,14.2,'D3'],                 // kitchen (from dining)
+    [23.0,37.25,25.5,37.55,'D3'],[23.0,5.45,25.5,5.75,'D3']                    // C.Bath (from dining)
+  ];
+
+  DUP.forEach(([x0,y0,x1,y1,c])=>{
+    if (park && ((shops && x1<=13.0) || (y0>21 && x0<29))) return;   // ground: west part = shops (if any), north part = parking
+    pbox(x0,y0,x1,y1, 7.0, fb, mat.doorLeaf, ig);
+    pbox(x0,y0,x1,y1, 0.25, fb+7.0, mat.frame, ig);
+    DOORLBL.push([c, (x0+x1)/2, (y0+y1)/2, k, GV]);
+  });
+  if (park && shops) DOORLBL.push(['D1', 15.1, 16.7, 0, GV]);   // ground flat door
+  if (park && shops) DOORLBL.push(['D3', 15.45, -0.6, 0, GV]);   // shop toilet door (outside, south)
+  if (!park) BALDOOR.forEach(([a0,a1])=>DOORLBL.push(['D4', -0.6, (a0+a1)/2, k]));   // balcony doors (west face)
+  // ---------- realistic furniture ----------
+  if (!park){ furnishHalf(fb, ig, false, {all:true}); furnishHalf(fb, ig, true, {all:true}); balconyFurniture(fb, ig); }
+  else if (shops) { furnishHalf(fb, ig, true, {all:false}); shopFurniture(fb, ig, s3); }
+  else { furnishHalf(fb, ig, true, {all:true}); }
+  if (!park){ tintHalf(fb,false,true); tintHalf(fb,true,true); }
+  else { tintHalf(fb,true,!shops); if (shops) tint(ET,ET,12.6,s3?31.3:21.6,'shop',fb+0.06,false); tint(0.2,31.8,BW-0.2,BD-0.2,'park',0.58,false); tint(s3?13.0:0.2,26.6,BW-0.2,31.6,'park',0.58,false); }
+  tint(12.9,16.95,25.6,26.05,'stair',fb+0.06,false);
+}
+
+
+// build: upper floors once; ground floor in two versions (with shops / one flat like the upper floors)
+const gShop=new THREE.Group(), gNo=new THREE.Group(); scene.add(gShop); scene.add(gNo);
+const gS3=new THREE.Group(), gS2=new THREE.Group(); gShop.add(gS3); gShop.add(gS2);      // 3-shop / 2-shop versions
+const shS3=new THREE.Group(), shS2=new THREE.Group(); shutterG.add(shS3); shutterG.add(shS2);
+const gParkOnly=new THREE.Group(); scene.add(gParkOnly);   // things that exist only while the parking is a parking
+const tShop=new THREE.Group(), tNo=new THREE.Group(); tintG.add(tShop); tintG.add(tNo);
+const tS3=new THREE.Group(), tS2=new THREE.Group(); tShop.add(tS3); tShop.add(tS2);
+for (let k=1;k<NF;k++) buildFloor(k,true);
+CURG=gS3; CURT=tS3; CURSH=shS3; GV='shop3'; buildFloor(0,3);
+CURG=gS2; CURT=tS2; CURSH=shS2; GV='shop2'; buildFloor(0,2);
+CURSH=null;
+CURG=gNo;   CURT=tNo;   GV='noshop'; buildFloor(0,0);
+CURG=null;  CURT=null;  GV=null;
+
+// ---------- stairs (dog-leg): floor landing WEST (x 13-17, where flat doors are), mid-landing EAST ----------
+(function(){
+  const xl=17.0, xs=24.6, xm=28.25;      // flights xl..xs, mid landing xs..xm
+  const yS0=16.9, yS1=21.3, yN0=21.8, yN1=26.1;
+  const n=9, r=FH/18, tw=(xs-xl)/n, th=0.7;
+  for (let k=0;k<NF;k++){
+    const fb=floorBase(k);
+    for (let i=0;i<n;i++){ // flight 1 (south half): from floor landing going EAST, up
+      const xa = xl + i*tw, top = fb+(i+1)*r, b = Math.max(fb, top-th);
+      pbox(xa,yS0,xa+tw,yS1, top-b, b, mat.stair);
+    }
+    pbox(xs,yS0,xm,yN1, 0.45, fb+FH/2-0.45, mat.stair);   // mid landing (east)
+    for (let i=0;i<n;i++){ // flight 2 (north half): from mid landing going WEST, up to next floor
+      const xa = xs - (i+1)*tw, top = fb+FH/2+(i+1)*r, b = top-th;
+      pbox(xa,yN0,xa+tw,yN1, th, b, mat.stair);
+    }
+    pbox(xl,yS1,xs,yN0, FH, fb, mat.wCore);               // mid wall
+    // handrails
+    pbox(xl,yS1-0.15,xs,yS1, 0.12, fb+3.0+FH/4, mat.rail);
+  }
+})();
+
+// ---------- ground floor parking: cars + stair door ----------
+// door from parking into the ground entry passage (west side)
+function carEW(cx, cy, color){   // car pointing East-West (enters from the West gate)
+  const body = M(color, {roughness:0.35, metalness:0.5});
+  pbox(cx-7.5,cy-3.0,cx+7.5,cy+3.0, 2.2, 0.5+0.9, body);
+  pbox(cx-3.6,cy-2.7,cx+3.2,cy+2.7, 1.7, 0.5+3.1, mat.glass);
+  pbox(cx-3.4,cy-2.75,cx+3.0,cy+2.75, 0.25, 0.5+4.8, body);
+  [[-5,-3.05],[5,-3.05],[-5,2.65],[5,2.65]].forEach(([dx,dy])=>pbox(cx+dx-1.1,cy+dy,cx+dx+1.1,cy+dy+0.4, 1.9, 0.5, mat.frame));
+}
+// parking contents in their own group (hidden when the temporary unit is shown)
+const gCars = new THREE.Group(); scene.add(gCars); CURG = gCars;
+// 2 cars (tandem) in the lane north of the column row (clear lane ~9'-6"), entering from the West
+carEW(9.5, 37.2, 0xb8c2cc); carEW(27.0, 37.2, 0x8c1f22);
+// motorbikes in the strip south of the column row
+for (let i=0;i<4;i++){ const x=18.6+i*2.5; pbox(x,27.0,x+0.9,30.6, 2.6, 0.5, M(0x2f3a48,{metalness:0.4,roughness:0.5})); }
+// lane marking
+pbox(0.5,32.2,36.5,32.35, 0.02, 0.57, mat.roadLine, undefined, false);
+CURG = null;
+
+// ---------- TEMPORARY UNIT in the parking (removable later) ----------
+// Built only with light panel walls between the RCC columns (no new column/beam), raised floor on sand fill.
+// A 4' path stays free: car gate -> along the column row -> 3 steps -> stair.
+const gUnit = new THREE.Group(); scene.add(gUnit); gUnit.visible = false;
+(function(){
+  const PNL = M(0xe6e9ec,{roughness:0.55}), SEAM = M(0x8f979e,{roughness:0.5});
+  const H = FH - SLAB - (PL - 0.5) - 0.0, B = PL;            // panel height from the raised floor to the slab
+  const wallX = (x0,x1,y0,y1,wins)=>{ // panel wall running along x, with window list [[a,b]]
+    let cur=x0; (wins||[]).forEach(([a,b])=>{ pbox(cur,y0,a,y1,9.5,B,PNL,gUnit); pbox(a,y0,b,y1,3.0,B,PNL,gUnit); pbox(a,y0,b,y1,2.5,B+7.0,PNL,gUnit);
+      pbox(a,(y0+y1)/2-0.05,b,(y0+y1)/2+0.05,4.0,B+3.0,mat.glass,gUnit); pbox(a,y0-0.05,b,y1+0.05,0.15,B+3.0,mat.frame,gUnit); pbox(a,y0-0.05,b,y1+0.05,0.15,B+6.85,mat.frame,gUnit); cur=b; });
+    pbox(cur,y0,x1,y1,9.5,B,PNL,gUnit);
+    for (let x=x0+3; x<x1-0.5; x+=3) pbox(x,y0-0.02,x+0.06,y1+0.02,9.5,B,SEAM,gUnit);   // panel seams
+  };
+  const wallY = (y0,y1,x0,x1,wins,door)=>{
+    let cur=y0; const ops=(wins||[]).map(w=>[...w,'w']).concat(door?[[...door,'d']]:[]).sort((p,q)=>p[0]-q[0]);
+    ops.forEach(([a,b,t])=>{ pbox(x0,cur,x1,a,9.5,B,PNL,gUnit);
+      if (t==='w'){ pbox(x0,a,x1,b,3.0,B,PNL,gUnit); pbox(x0,a,x1,b,2.5,B+7.0,PNL,gUnit); pbox((x0+x1)/2-0.05,a,(x0+x1)/2+0.05,b,4.0,B+3.0,mat.glass,gUnit); }
+      else { pbox(x0,a,x1,b,2.5,B+7.0,PNL,gUnit); pbox((x0+x1)/2-0.06,a,(x0+x1)/2+0.06,b,7.0,B,mat.doorLeaf,gUnit); }
+      cur=b; });
+    pbox(x0,cur,x1,y1,9.5,B,PNL,gUnit);
+    for (let y=y0+3; y<y1-0.5; y+=3) pbox(x0-0.02,y,x1+0.02,y+0.06,9.5,B,SEAM,gUnit);
+  };
+  // Walls follow the SAME lines as the flats above (column lines x=13.0, x=25.5 and the row y=31.7),
+  // so every room starts at a pillar and has the same size as the room above it.
+  // raised floor (sand fill + CC) to the flat level, tiles
+  pbox(17.2,26.5,BW,BD, PL-0.5, 0.5, mat.plinth, gUnit);
+  pbox(17.6,26.7,BW-ET,BD-0.4, 0.05, PL, mat.floorA, gUnit, false);
+  // outer panel walls
+  wallX(17.2,BW,BD-0.43,BD,[[19.5,23.5],[29.5,35.0]]);              // north (road side): living and bedroom windows
+  wallY(26.5,BD,BW-0.43,BW,[[34.0,39.0]]);                         // east: bedroom window
+  wallY(26.5,BD,17.2,17.6,[],null);                                 // west (beside the free path) — straight wall, no L-shaped extension
+  // ENTRY DOOR on the SOUTH side: from the stair landing, through the tall end of the space under the 2nd flight
+  pbox(17.6,26.4,20.4,26.5, 7.0, B, mat.doorLeaf, gUnit);
+  pbox(17.6,26.1,20.4,26.72, 2.5, B+7.0, PNL, gUnit);
+  pbox(20.4,21.8,20.8,26.1, 7.4, B, mat.wallIn, gUnit);             // closes off the low part under the stair (store)
+  // partitions — same lines as the north flat above
+  const IN = mat.wallIn;
+  pbox(25.5,35.1,25.9,BD-0.43, 9.5, B, IN, gUnit); pbox(25.5,31.7,25.9,32.1, 9.5, B, IN, gUnit);   // x=25.5 pillar line: bedroom door 32.1-35.1 (as above)
+  pbox(25.55,32.1,25.85,35.1, 7.0, B, mat.doorLeaf, gUnit);
+  pbox(25.9,31.5,BW-0.43,31.9, 9.5, B, IN, gUnit);                  // y=31.7 pillar row: bedroom | kitchen
+  // kitchen + common bath side by side in the old kitchen zone + the parking store (x 28.7-36.7, y 22-31.5); BOTH doors open from the living
+  pbox(28.7,26.2,BW-ET,26.8, 0.05, PL, mat.floorA, gUnit, false);                // floor where the store wall was
+  pbox(28.3,28.7,28.7,29.0, 9.5, B, IN, gUnit);                                  // between the two doors
+  pbox(28.35,26.75,28.65,28.65, 7.0, B, mat.doorLeaf, gUnit);                    // kitchen door 26.7-28.7
+  pbox(28.35,29.05,28.65,31.45, 7.0, B, mat.doorLeaf, gUnit);                    // bath door 29.0-31.5
+  pbox(28.7,28.7,33.1,29.0, 9.5, B, IN, gUnit);                                  // kitchen | bath
+  pbox(32.8,25.6,33.1,28.7, 9.5, B, IN, gUnit); pbox(33.1,25.6,BW-ET,25.9, 9.5, B, IN, gUnit);   // kitchen | bath (shower part)
+  // furniture
+  const F = mkF(PL, gUnit, false);
+  // bedroom 11' x 10'-3" (same as the bedroom above): bed, wall cabinet, dressing table, computer table
+  F.bed(30.2,35.0,36.6,40.0,'E'); F.wardrobe(25.95,36.0,27.95,41.0);
+  F.dressing(31.0,31.95,34.0,33.45,'S'); F.desk(28.0,40.15,30.8,42.15,'N');
+  // living / dining
+  F.sofa(17.65,37.0,20.1,42.0,'W'); F.table(20.8,38.3,23.0,40.7,1.5,FM.coffee); F.tvunit(24.4,37.2,25.45,41.8,'E');
+  F.table(20.6,32.4,24.6,34.8,2.5); [21.6,23.6].forEach(x=>{ F.chair(x,31.55,'S'); F.chair(x,35.65,'N'); });
+  F.plant(24.6,27.4);
+  // L-shaped kitchen ~8'x6'-6": counter along the south wall (next to the ground flat kitchen — one plumbing wall), fridge by the door
+  F.counter(28.8,22.05,36.6,24.05); F.upper(28.8,22.05,36.6,23.15); F.sink(31.0,23.05); F.stove(34.8,23.05);
+  F.fridge(30.7,26.6,32.7,28.65);
+  // common bath (L-shape): basin + WC along the bedroom wall, shower in the inner part
+  F.wc(35.2,31.45,'S'); F.basin(32.4,31.45,'S'); F.shower(33.2,26.0,36.6,28.9);
+  // motorbikes moved to the north-west strip, and the 4' path marked
+  for (let i=0;i<4;i++){ const x=1.5+i*2.7; pbox(x,38.0,x+0.9,41.6, 2.6, 0.5, M(0x2f3a48,{metalness:0.4,roughness:0.5}), gUnit); }
+  const PATH = M(0xffd54f,{roughness:0.8});
+  pbox(0.0,32.0,17.0,35.8, 0.03, 0.56, PATH, gUnit, false); pbox(13.2,29.0,17.0,32.0, 0.03, 0.56, PATH, gUnit, false);
+})();
+let UNIT_ON = false;
+const ROOMS_UNIT = [["অস্থায়ী ইউনিট: বেডরুম 11'x10'-3\" (উপরের মতো)",31.3,37.6],["লিভিং / ডাইনিং",21.0,34.5],["রান্নাঘর 8'x6'-6\" (লিভিং থেকে দরজা)",31.6,25.3],
+  ["কমন বাথ (লিভিং থেকে দরজা)",31.0,30.3],["ঢোকার দরজা (দক্ষিণে, সিঁড়ির ল্যান্ডিং থেকে)",19.0,24.0],["সিঁড়িতে যাওয়ার পথ 4' (খালি রাখুন)",8.5,33.9],["মোটরসাইকেল",6.0,39.8]];
+// driveway + gentle ramp from the West car gate (0 -> +6")
+pbox(PX0,31.8,0.0,43.0, 0.05, 0.02, mat.conc, groups.site, false);
+(function(){
+  const run = 0 - PX0, rise = 0.5;
+  const g = new THREE.BoxGeometry(Math.hypot(run, rise), 0.3, 11.2);
+  const m = new THREE.Mesh(g, mat.conc); m.receiveShadow = true;
+  m.position.set(PX0 + run/2, rise/2, -37.4); m.rotation.z = Math.atan2(rise, run);
+  groups.site.add(m);
+})();
+
+
+// ---------- facade features: brick cladding, wooden fins, roof pergola, landscape ----------
+const brickTex = (function(){
+  const c=document.createElement('canvas'); c.width=256; c.height=128; const x=c.getContext('2d');
+  x.fillStyle='#2a2522'; x.fillRect(0,0,256,128);                    // dark gaps between slats
+  const cols=['#9c6b3e','#a8744a','#8f6238','#b07c50','#966840','#a06f44','#8a5d35','#ab7849'];
+  for(let i=0;i<8;i++){ x.fillStyle=cols[i]; x.fillRect(i*32+2, 0, 28, 128);
+    x.fillStyle='rgba(0,0,0,0.08)'; for(let k=0;k<6;k++) x.fillRect(i*32+4+k*4, 0, 1, 128); }   // vertical timber slats
+  const t=new THREE.CanvasTexture(c); t.wrapS=t.wrapT=THREE.RepeatWrapping; t.encoding=THREE.sRGBEncoding; t.anisotropy=8; return t;
+})();
+function brickMat(w,h){ const t=brickTex.clone(); t.needsUpdate=true; t.repeat.set(Math.max(1,w/4.0), Math.max(1,h/8.0)); return M(0xffffff,{map:t, roughness:0.75}); }
+function clad(face, a, b, y0, y1){ // thin brick panel on N or S face, plan range a..b (px), heights y0..y1
+  const w=b-a, h=y1-y0; if (w<=0.05||h<=0.05) return;
+  const m=brickMat(w,h);
+  if (face==='N') pbox(a,BD,b,BD+0.15, h, y0, m);
+  else pbox(a,-0.15,b,0, h, y0, m);
+}
+// central brick feature on North (road) & South facades, skipping bath windows
+['N','S'].forEach(face=>{
+  for (let k=0;k<NF;k++){
+    if (face==='N' && k===0) continue;  // ground north = open parking
+    const fb=floorBase(k), top=fb+FH-SLAB;
+    clad(face,12.6,14.6,fb,top); clad(face,16.6,20.6,fb,top); clad(face,22.6,25.9,fb,top);
+    [[14.6,16.6],[20.6,22.6]].forEach(([a,b])=>{ clad(face,a,b,fb,fb+5); clad(face,a,b,fb+7,top); });
+    // vertical wooden fins over the bath windows (privacy)
+    [[14.6,16.6],[20.6,22.6]].forEach(([a,b])=>{
+      for (let x=a+0.15; x<b; x+=0.45){
+        if (face==='N') pbox(x,BD+0.15,x+0.12,BD+0.9, 2.4, fb+4.8, mat.wood); else pbox(x,-0.9,x+0.12,-0.15, 2.4, fb+4.8, mat.wood);
+      }
+    });
+  }
+  // continue the brick band up through the parapet
+  clad(face,12.6,25.9,ROOF,ROOF+3.5);
+});
+// stair-room (mumty) in brick
+(function(){ const h=8.5; const mB=brickMat(13.3,h), mS=brickMat(10,h);
+  pbox(12.55,26.5,25.95,26.65,h,ROOF,mB); pbox(12.55,16.35,25.95,16.5,h,ROOF,mB);
+  pbox(12.45,16.5,12.6,26.5,h,ROOF,mS);
+})();
+// roof pergola (wood) over the south-west roof terrace + planters
+// (replaced by the glass roof pavilion below)
+for (let x=2; x<36; x+=4.2){ pbox(x,0.6,x+2.6,1.8, 1.3, ROOF, mat.pot); const p=new THREE.Mesh(new THREE.SphereGeometry(1.1,10,8), mat.plant); p.position.set(x+1.3, ROOF+2.0, -1.2); p.castShadow=true; groups.bldg.add(p); }
+// shrubs along the boundary
+function shrub(x,y,r){ const p=new THREE.Mesh(new THREE.SphereGeometry(r,10,8), mat.plant); p.position.set(x, r*0.8, -y); p.castShadow=true; groups.site.add(p); }
+for (let x=-3.5; x<40; x+=2.6) shrub(x,-1.7,0.9);
+for (let y=0; y<44; y+=2.6) shrub(39.6,y,0.85);
+[[-3.5,1],[-3.5,4],[-3.5,8],[-3.5,12],[-3.5,30],[-3.5,38],[-3.5,42]].forEach(([x,y])=>shrub(x,y,0.8));
+// boundary wall caps
+pbox(-4.6,-2.6,40.6,-2.0, 0.3, 5.0, mat.band, groups.site);
+pbox(40.0,-2.6,40.6,45.6, 0.3, 5.0, mat.band, groups.site);
+
+
+// ---------- West (main road) front: brick band, name plate ----------
+(function(){
+  const a=19.7, b=23.3;               // between the two drawing-room windows
+  const mk=(y0,y1)=>{ const m=brickMat(b-a, y1-y0); pbox(-0.15,a,0,b, y1-y0, y0, m); };
+  mk(PL+8.5, ROOF+3.5);               // above entrance canopy to parapet
+  // brick on west parapet
+  const mp=brickMat(BD,3.5); pbox(-0.15,0,0,BD, 3.5, ROOF, mp);
+  // name plate on canopy fascia
+  const c=document.createElement('canvas'); c.width=1024; c.height=128; const x=c.getContext('2d');
+  x.fillStyle='#2b2f33'; x.fillRect(0,0,1024,128); x.fillStyle='#e8d3a8'; x.font='700 78px "Hind Siliguri","Noto Sans Bengali","Nirmala UI",serif'; x.textAlign='center'; x.textBaseline='middle';
+  x.fillText("শিফার বাড়ি", 512, 70);
+  const t=new THREE.CanvasTexture(c); t.encoding=THREE.sRGBEncoding;
+  const plate=new THREE.Mesh(new THREE.PlaneGeometry(5.0,0.62), new THREE.MeshStandardMaterial({map:t, roughness:0.6, clippingPlanes:clip}));
+  plate.position.set(-0.05, PL+10.4, -37.2); plate.rotation.y=-Math.PI/2; groups.bldg.add(plate);
+})();
+
+
+// ---------- modern features: west sun-fins, LED slab lines, glass roof pavilion ----------
+(function(){
+  const fin = M(0x2a2d31,{metalness:0.4,roughness:0.45});
+  // vertical aluminium fins on the West (main-road) facade, 1st floor to parapet, shading the drawing-room windows
+  for (let y=12.2; y<=27.6; y+=1.15){ if (y>19.6 && y<23.4) continue; pbox(-1.45,y,-0.15,y+0.16, ROOF+3.5-(PL+FH), PL+FH, fin); }
+  pbox(-1.6,12.0,0,27.9, 0.35, ROOF+3.5, fin);                               // top beam tying the fins
+  // warm LED lines under every slab edge (all four sides)
+  for (let k=1;k<=NF;k++){ const y=floorBase(k)-SLAB-0.06;
+    pbox(-0.4,-0.45,BW+0.4,-0.38, 0.05, y, mat.led); pbox(-0.4,BD+0.38,BW+0.4,BD+0.45, 0.05, y, mat.led);
+    pbox(BW+0.38,-0.4,BW+0.45,BD+0.4, 0.05, y, mat.led); pbox(-0.45,-0.4,-0.38,BD+0.4, 0.05, y, mat.led); }
+  // slim metal coping on the parapet
+  pbox(-0.25,-0.25,BW+0.25,BD+0.25, 0.12, ROOF+3.5, M(0x8d949b,{metalness:0.7,roughness:0.3})).castShadow=false;
+  // glass + steel roof pavilion over the roof terrace (south-west)
+  const steel = M(0x2a2d31,{metalness:0.5,roughness:0.4});
+  [[1.5,1.5],[11.5,1.5],[1.5,13.5],[11.5,13.5]].forEach(([x,y])=>pbox(x,y,x+0.35,y+0.35, 8.0, ROOF, steel));
+  pbox(1.3,1.3,12.1,14.1, 0.25, ROOF+8.0, steel);
+  pbox(1.5,1.5,11.9,13.9, 0.06, ROOF+8.25, mat.glassRail);
+  // roof garden lawn + loungers
+  pbox(2.0,2.0,11.0,13.0, 0.08, ROOF+0.06, M(0x7fb35a));
+  [[3.0,4.0],[3.0,8.0]].forEach(([x,y])=>{ pbox(x,y,x+5.5,y+2.0, 1.0, ROOF+0.1, M(0xe9e2d6)); pbox(x,y,x+1.2,y+2.0, 2.0, ROOF+0.1, M(0xe9e2d6)); });
+})();
+// ---------- night view ----------
+let night=false;
+const hemi = scene.children.find(o=>o.isHemisphereLight);
+function setNight(on){
+  night=on;
+  document.body.style.background = on ? 'linear-gradient(#0b1626 0%,#1b2a44 55%,#2c3b52 100%)' : 'linear-gradient(#8fbbe0 0%,#c7def0 45%,#e9f1f6 100%)';
+  scene.fog.color.setHex(on?0x16233a:0xdde8f1);
+  if (hemi) hemi.intensity = on?0.12:0.45; sun.intensity = on?0.12:1.35; scene.environment = on ? ENV.night : ENV.day;
+  mat.glass.emissive = new THREE.Color(on?0xffc97a:0x000000); mat.glass.emissiveIntensity = on?0.75:0;
+  mat.led.emissiveIntensity = on?2.2:0.9;
+  document.getElementById('nightB').classList.toggle('on',on);
+}
+document.getElementById('nightB').onclick=()=>setNight(!night);
+
+// ---------- columns (slightly proud of exterior walls) ----------
+COLS.forEach(([x,y])=>{
+  const w=1.0, d=1.25;
+  pbox(x-w/2, y-d/2, x+w/2, y+d/2, ROOF+3.5, (x>1&&x<36&&y>1&&y<42)?0:(y>26?0.5:PL), mat.col);
+});
+
+// ---------- roof: slab, parapet, stair room, water tank ----------
+pbox(-0.4,-0.4,BW+0.4,BD+0.4, SLAB, ROOF-SLAB, mat.band);
+const PH = 3.5;
+pbox(0,0,BW,0.5, PH, ROOF, mat.wall); pbox(0,BD-0.5,BW,BD, PH, ROOF, mat.wall);
+pbox(0,0,0.5,BD, PH, ROOF, mat.wall); pbox(BW-0.5,0,BW,BD, PH, ROOF, mat.wall);
+pbox(-0.2,-0.2,BW+0.2,BD+0.2, 0.25, ROOF+PH, mat.accent).castShadow=false;
+pbox(0.5,0.5,BW-0.5,BD-0.5, 0.06, ROOF, mat.pave, groups.bldg, false);
+// stair room (mumty)
+pbox(12.6,16.5,25.9,26.5, 8.5, ROOF, mat.wall);
+pbox(12.2,16.1,26.3,26.9, 0.5, ROOF+8.5, mat.band);
+pbox(25.85,19.0,25.95,22.5, 7.0, ROOF, mat.door);     // roof door (east)
+// water tank
+pbox(15.0,18.0,22.0,25.0, 4.5, ROOF+9.0, mat.tank);
+pbox(14.8,17.8,22.2,25.2, 0.3, ROOF+13.5, mat.accent);
+// solar-ready light frame
+// (residents now enter through the gate beside the car gate -> parking -> stair)
+
+// ---------- foundation (below ground: y < 0) ----------
+const FD = 6.0; // footing depth
+COLS.forEach(([x,y])=>{
+  const s = 6.0;
+  // footing base & slope
+  pbox(x-s/2,y-s/2,x+s/2,y+s/2, 1.25, -FD, mat.conc, groups.found);
+  pbox(x-s/2+0.9,y-s/2+0.9,x+s/2-0.9,y+s/2-0.9, 0.75, -FD+1.25, mat.conc2, groups.found);
+  // pedestal / column stub
+  pbox(x-0.55,y-0.65,x+0.55,y+0.65, FD-2.0, -FD+2.0, mat.col, groups.found);
+});
+// grade beams along grid lines (connect columns)
+const gb = (x0,y0,x1,y1)=>pbox(x0,y0,x1,y1, 1.5, -1.5, mat.conc2, groups.found);
+COLY.forEach(y=>gb(0.5-0.4,y-0.4,37.0+0.4,y+0.4));
+COLX.forEach(x=>gb(x-0.4,0.4-0.4,x+0.4,42.6+0.4));
+// plinth beam ring at ground level
+pbox(-0.1,-0.1,BW+0.1,0.8, 1.0, 0.0, mat.conc2, groups.found);
+// excavation pit outline (soil box, transparent)
+const soil = pbox(-6,-6,BW+6,BD+6, FD+0.5, -FD-0.5, mat.soil, groups.found, false);
+soil.renderOrder = 2;
+
+// ---------- site ----------
+// plot: x -4.5..40.5 ; y -2.5..45.5
+// (plot constants defined at top)
+const ground = pbox(-200,-200,200,200, 0.2, -0.2, mat.grass, groups.site, false);
+pbox(PX0,PY0,PX1,PY1, 0.06, 0.0, mat.pave, groups.site, false);
+// roads: north & west
+// MAIN ROAD on the West (20'), own access road on the North (10', from own land)
+pbox(PX0-22.5,-90,PX0-2.5,140, 0.08, 0.02, mat.road, groups.site, false);
+pbox(PX0-2.5,-90,PX0-0.5,140, 0.12, 0.02, mat.pave, groups.site, false);           // footpath
+for (let y=-86;y<138;y+=10) pbox(PX0-12.7,y,PX0-12.3,y+5, 0.02, 0.1, mat.roadLine, groups.site, false);
+const accessRd = M(0xa79f93);
+pbox(PX0-2.5,PY1+0.5,PX1+8,PY1+6.5, 0.07, 0.02, accessRd, groups.site, false);   // own access road, 6' wide
+pbox(PX1+8,PY1+0.5,PX1+60,PY1+6.5, 0.05, 0.01, M(0xb9b19f,{transparent:true,opacity:0.6}), groups.site, false);
+// boundary wall (5'), gates on north (car) and west (pedestrian)
+const BH=5.0, bt=0.42;
+const bw=(x0,y0,x1,y1)=>pbox(x0,y0,x1,y1, BH, 0, mat.bwall, groups.site);
+bw(PX0,PY0,PX1,PY0+bt);                           // south
+bw(PX1-bt,PY0,PX1,PY1);                           // east
+bw(PX0,PY1-bt,PX1,PY1);                           // north: full wall (no gate)
+pbox(PX0,PY0,0,31.2, 0.12, 0.0, mat.pave, gS3, false);    // open shop frontage (3 shops) to West main road
+pbox(PX0,PY0,0,22.0, 0.12, 0.0, mat.pave, gS2, false);     // open shop frontage (2 shops)
+pbox(PX0,22.0,PX0+bt,31.2, BH, 0, mat.bwall, gS2);         // 2 shops: boundary wall north of them, up to the car gate
+pbox(0,PY0+0.42,18.0,0, 0.1, 0.0, mat.pave, gShop, false);   // path along the south setback to the shop toilet
+// without shops: west boundary wall closed all along (people come in through the small sliding door in the car gate)
+pbox(PX0,PY0,PX0+bt,31.2, BH, 0, mat.bwall, gNo);
+bw(PX0,44.4,PX0+bt,PY1);
+// ONE car gate (12' opening): a big sliding leaf for cars + a small sliding leaf (3') for people
+pbox(PX0+0.1,32.0,PX0+0.2,40.6, 5.5, 0, mat.gate, groups.site);                  // car leaf (8'-6", slides)
+pbox(PX0+0.05,40.7,PX0+0.25,43.6, 5.5, 0, M(0x3d444c,{metalness:0.5,roughness:0.4}), groups.site);   // small sliding door for people (3')
+pbox(PX0-0.05,42.9,PX0+0.0,43.3, 0.5, 3.2, mat.lockY||M(0xd4a017,{metalness:0.8,roughness:0.3}), groups.site);   // handle
+pbox(PX0+0.0,40.6,PX0+0.3,40.7, 5.5, 0, mat.frame, groups.site);                  // split line between the two leaves
+// gate pillars
+[[PX0,31.2],[PX0,43.6]].forEach(([x,y])=>pbox(x,y,x+0.8,y+0.8, 6.2, 0, mat.accent, groups.site));
+// path from west gate to entrance
+
+// trees
+function tree(x,y,s){
+  const t = new THREE.Mesh(new THREE.CylinderGeometry(0.35*s,0.5*s,7*s,8), mat.trunk);
+  t.position.set(x,3.5*s,-y); t.castShadow=true; groups.site.add(t);
+  const R=rnd(Math.round(x*131+y*71)+7);
+  for (let i=0;i<7;i++){   // a crown made of several leafy clumps, each a slightly different green
+    const r=(2.2+R()*1.6)*s, a=R()*6.28, d=(i?1.6+R()*1.6:0)*s;
+    const c = new THREE.Mesh(new THREE.IcosahedronGeometry(r,1), LEAFM[i%LEAFM.length]);
+    c.position.set(x+Math.cos(a)*d, (8.2+R()*2.6)*s, -y+Math.sin(a)*d); c.rotation.set(R()*3,R()*3,0); c.castShadow=true; c.receiveShadow=true; groups.site.add(c);
+  }
+}
+const LEAFM=[M(0x4f8a3a,{flatShading:true,roughness:0.9}), M(0x3f7a2e,{flatShading:true,roughness:0.9}), M(0x5e9a44,{flatShading:true,roughness:0.9})];
+tree(PX1+12,10,1.1); tree(PX1+14,34,1.0); tree(-30,60,1.2); tree(70,70,1.3); tree(55,-15,1.2); tree(15,-22,1.0); tree(-28,-20,1.1);
+// neighbour hint blocks (low, faded)
+const nb = M(0xd8d2c8, {transparent:true, opacity:0.6});
+pbox(-10,-55,30,-25, 16, 0, nb, groups.site);   // neighbour (south), faded
+// own land to the East: lawn with a low hedge line
+pbox(PX1,PY0,PX1+45,PY1, 0.04, 0.01, M(0x8cbc63), groups.site, false);
+for (let y=PY0; y<PY1; y+=3.0) shrub(PX1+44, y, 0.8);
+[[PX1+8,2],[PX1+16,12],[PX1+26,4],[PX1+34,16],[PX1+10,28],[PX1+22,36],[PX1+32,30],[PX1+40,42],[PX1+18,22]].forEach(([x,y],i)=>tree(x,y,0.8+0.15*(i%3)));
+
+// ---------- labels ----------
+function textSprite(txt, size, color, bg){
+  if (!/^D\d$/.test(txt)) txt = bn(txt);
+  const c = document.createElement('canvas'); const ctx = c.getContext('2d');
+  const fs = 64; ctx.font = `600 ${fs}px "Hind Siliguri","Noto Sans Bengali","Nirmala UI",system-ui,sans-serif`;
+  const w = ctx.measureText(txt).width + 40; c.width = w; c.height = fs + 34;
+  ctx.font = `600 ${fs}px "Hind Siliguri","Noto Sans Bengali","Nirmala UI",system-ui,sans-serif`;
+  if (bg){ ctx.fillStyle = bg; ctx.beginPath(); ctx.roundRect ? ctx.roundRect(0,0,c.width,c.height,20) : ctx.rect(0,0,c.width,c.height); ctx.fill(); }
+  ctx.fillStyle = color; ctx.textBaseline='middle'; ctx.fillText(txt, 20, c.height/2+2);
+  const tex = new THREE.CanvasTexture(c); tex.anisotropy = 4;
+  const sp = new THREE.Sprite(new THREE.SpriteMaterial({map:tex, depthTest:false, transparent:true}));
+  sp.scale.set(size*c.width/c.height, size, 1); sp.renderOrder = 10;
+  return sp;
+}
+const floorNames = ['নিচতলা','দোতলা','তিনতলা'];
+floorNames.forEach((n,k)=>{ const s=textSprite(n,2.6,'#1f3550','rgba(255,255,255,0.85)'); s.position.set(BW+9, floorBase(k)+5, -BD/2); groups.labels.add(s); });
+const sR=textSprite('ছাদ (সিঁড়ি ঘর + পানির ট্যাংক)',2.4,'#1f3550','rgba(255,255,255,0.85)'); sR.position.set(BW+12, ROOF+8, -BD/2); groups.labels.add(sR);
+const sRoadN=textSprite('নিজস্ব রাস্তা (উত্তরে, 6\')',2.0,'#2a2a2a','rgba(255,255,255,0.75)'); sRoadN.position.set(18, 0.8, -(PY1+3.5)); groups.labels.add(sRoadN);
+const sRoadW=textSprite('মেইন রোড (পশ্চিমে)',3.0,'#ffffff'); sRoadW.position.set(PX0-12.5, 0.8, 8); groups.labels.add(sRoadW);
+const sEast=textSprite('নিজস্ব জমি (পূর্বে) — গাছ / বিক্রিও হতে পারে',2.4,'#1f3550','rgba(255,255,255,0.8)'); sEast.position.set(PX1+22, 2.5, -20); groups.labels.add(sEast);
+// room labels (only in cut view)
+const roomLbl = new THREE.Group(); scene.add(roomLbl);
+const ROOMS_UP = [ // [label with size, x, y]  (plan coords, feet)
+  ["মাস্টার বেড 12'x10'-6\"",5.5,37],["বেডরুম 11'x10'-3\"",31.5,37],["ড্রয়িং 12'-6\"x9'-9\"",6.3,26.5],["ডাইনিং 12'-6\"x10'-9\"",19.3,33],
+  ["রান্নাঘর 8'x9'-9\"",32.8,25.6],["অ্যাটাচড বাথ 6'x5'",16,40.2],["কমন বাথ 6'x5'",22.2,40.2],["বারান্দা 6'-6\"x3'-3\"",-1.8,31.6],
+  ["ড্রয়িং 12'-6\"x9'-9\"",6.3,16.5],["ডাইনিং 12'-6\"x10'-9\"",19.3,10.2],["রান্নাঘর 8'x9'-9\"",32.8,16.8],
+  ["মাস্টার বেড 12'x10'-6\"",5.5,6],["বেডরুম 11'x10'-3\"",31.5,6],["অ্যাটাচড বাথ 6'x5'",16,2.8],["কমন বাথ 6'x5'",22.2,2.8],["বারান্দা 10'x3'-6\"",-1.9,6.0],
+  ["সিঁড়ি 12'-11\"x9'-2\"",19.5,21.5]
+];
+const ROOMS_GN = [ // ground floor without shops: one flat like the upper floors (no balcony)
+  ["মাস্টার বেড 12'x10'-6\"",5.5,6],["ড্রয়িং 12'-6\"x9'-9\"",6.3,16.5],["ডাইনিং 12'-6\"x10'-9\"",19.3,10.2],["রান্নাঘর 8'x9'-9\"",32.8,16.8],
+  ["বেডরুম 11'x10'-3\"",31.5,6],["অ্যাটাচড বাথ 6'x5'",16,2.8],["কমন বাথ 6'x5'",22.2,2.8],["সিঁড়ি 12'-11\"x9'-2\"",19.5,21.5],["লবি (পার্কিং এর সাথে খোলা)",6.5,24.2],
+  ["পার্কিং লেন 36'x9'-6\" (2টি গাড়ি)",18.75,37],["বাইক 20'x4'-6\"",24.5,28.9]
+];
+const ROOMS_G3 = [
+  ["মুদি দোকান 10'-4\"x11'-9\"",6.6,6.0],["চায়ের দোকান 10'x11'-9\"",6.6,16.3],["দোকান-৩ 9'-4\"x11'-9\"",6.6,26.6],
+  ["বেডরুম 11'x10'-3\"",31.5,6],["ডাইনিং 12'-6\"x10'-9\"",19.3,10.2],["রান্নাঘর 8'x9'-9\"",32.8,16.8],["দোকানদারদের টয়লেট 6'x5'",16,2.8],["কমন বাথ 6'x5'",22.2,2.8],
+  ["সিঁড়ি 12'-11\"x9'-2\"",19.5,21.5],["স্টোর 8'x4'-3\"",32.8,24.2],
+  ["পার্কিং লেন 36'x9'-6\" (2টি গাড়ি)",18.75,37],["বাইক 20'x4'-6\"",24.5,28.9]
+];
+const ROOMS_G = [
+  ["মুদি দোকান 10'-4\"x11'-9\"",6.6,6.0],["চায়ের দোকান 10'x11'-9\"",6.6,16.3],["লবি (পার্কিং এর সাথে খোলা)",6.5,24.2],
+  ["বেডরুম 11'x10'-3\"",31.5,6],["ডাইনিং 12'-6\"x10'-9\"",19.3,10.2],["রান্নাঘর 8'x9'-9\"",32.8,16.8],["দোকানদারদের টয়লেট 6'x5'",16,2.8],["কমন বাথ 6'x5'",22.2,2.8],
+  ["সিঁড়ি 12'-11\"x9'-2\"",19.5,21.5],["স্টোর 8'x4'-3\"",32.8,24.2],
+  ["পার্কিং লেন 36'x9'-6\" (2টি গাড়ি)",18.75,37],["বাইক 20'x4'-6\"",24.5,28.9]
+];
+const rooms = ROOMS_UP;
+const foundLbl = new THREE.Group(); scene.add(foundLbl);
+[['কলামের ফুটিং 6\'x6\', 6\' গভীরে (আনুমানিক)',-22,-5.2,-6],['গ্রেড বিম',-22,-0.8,-20],['প্লিন্থ লেভেল +2\'',-18,2.3,-34]].forEach(([t,x,y,z])=>{const s=textSprite(t,1.9,'#3b2a1a','rgba(255,255,255,0.88)'); s.position.set(x,y,z); foundLbl.add(s);});
+foundLbl.visible=false;
+
+
+// ---------- dimension lines (sizes) ----------
+const dimG = new THREE.Group(); scene.add(dimG);
+const dimMat = new THREE.MeshBasicMaterial({color:0xb0108a});
+function dline(x0,y0,z0,x1,y1,z1){ // world coords, thin bar + end ticks
+  const a=new THREE.Vector3(x0,y0,z0), b=new THREE.Vector3(x1,y1,z1), len=a.distanceTo(b);
+  const m=new THREE.Mesh(new THREE.BoxGeometry(0.12,0.12,len), dimMat);
+  m.position.copy(a.clone().add(b).multiplyScalar(0.5)); m.lookAt(b); dimG.add(m);
+  [a,b].forEach(p=>{ const t=new THREE.Mesh(new THREE.BoxGeometry(0.5,0.5,0.5), dimMat); t.position.copy(p); dimG.add(t); });
+}
+function dlabel(t,x,y,z,sz){ const s=textSprite(t,sz||1.6,'#8a0b6c','rgba(255,255,255,0.9)'); s.position.set(x,y,z); dimG.add(s); }
+// building width (south side) and depth (east side)
+dline(0,0.6,2.2, BW,0.6,2.2);            dlabel("বিল্ডিং 37'-6\"", BW/2,1.8,2.2);
+dline(BW+3,0.6,0, BW+3,0.6,-BD);          dlabel("বিল্ডিং 43'-0\"", BW+3,1.8,-BD/2);
+// plot
+dline(PX0,0.4,-(PY0)+3.0, PX1,0.4,-(PY0)+3.0); dlabel("প্লট 45'-0\" (পূর্ব-পশ্চিম)", (PX0+PX1)/2,1.6,-(PY0)+3.0);
+dline(PX1+3,0.4,-PY0, PX1+3,0.4,-PY1);         dlabel("প্লট 48'-0\" (উত্তর-দক্ষিণ)", PX1+3,1.6,-(PY0+PY1)/2);
+// setbacks
+dlabel("পশ্চিমে ফাঁকা 4'-6\"", PX0/2, 1.2, -8, 1.2); dlabel("পূর্বে ফাঁকা 3'-0\"", BW+1.5, 1.2, -12, 1.2);
+dlabel("দক্ষিণে ফাঁকা 2'-6\"", 30, 1.2, 1.25, 1.2); dlabel("উত্তরে ফাঁকা 2'-6\"", 30, 1.2, -(BD+1.25), 1.2);
+// heights at the south-east corner
+const hx=BW+6, hz=3.0;
+dline(hx,0,hz, hx,ROOF+3.5,hz);
+dlabel("প্লিন্থ 2'-0\"", hx+5.5, 1.0, hz, 1.3);
+for (let k=0;k<NF;k++) dlabel(["নিচতলা","দোতলা","তিনতলা"][k]+" 10'-0\"", hx+6.5, floorBase(k)+5, hz, 1.3);
+dlabel("প্যারাপেট 3'-6\"", hx+5.5, ROOF+1.75, hz, 1.3);
+dlabel("মোট উচ্চতা 35'-6\" (প্যারাপেট পর্যন্ত)", hx+9, ROOF+6.5, hz, 1.4);
+dlabel("সিঁড়ি ঘর 8'-6\" + পানির ট্যাংক 4'-6\"", 19, ROOF+16.5, -21.5, 1.3);
+
+scene.add(shutterG);
+// ---------- state & UI ----------
+let cut = -1, fndView = false, spin = false, walk = false;
+const info = document.getElementById('info');
+function setInfo(){
+  if (fndView){
+    info.innerHTML = '<b>ফাউন্ডেশন (৩ তলার জন্য)</b><br>প্রতিটি কলামের নিচে আলাদা ফুটিং ~৬\'×৬\', মাটির ৬\' নিচে (আনুমানিক)।<br>গ্রেড বিম সব কলামকে মাটির লেভেলে বেঁধে রাখে; প্লিন্থ +২\'।<br>আরসিসি কলাম ১২"×১৫" (আনুমানিক), কলাম থেকে কলাম ~১২\'–২০\'।<br><i>চূড়ান্ত ফুটিং সাইজ ও রড: সয়েল টেস্ট + স্ট্রাকচারাল ইঞ্জিনিয়ার ঠিক করবেন।</i>';
+  } else if (cut>=0){
+    info.innerHTML = '<b>'+floorNames[cut]+' — ভেতরের দৃশ্য</b><br>'
+      +(cut===0&&UNIT_ON?'<b>পার্কিং এ অস্থায়ী ইউনিট</b> (~৪৩০ বর্গফুট: বেডরুম, লিভিং/ডাইনিং, রান্নাঘর ও কমন বাথ পাশাপাশি — দুটোরই দরজা লিভিং থেকে; ঢোকার দরজা দক্ষিণে, সিঁড়ির ল্যান্ডিং থেকে)। কলামের মাঝে হালকা প্যানেল দেয়াল, বালু ভরাট করে উঁচু মেঝে — পরে সহজে খুলে আবার পার্কিং করা যাবে। গাড়ির গেট থেকে সিঁড়ি পর্যন্ত ৪\' পথ (হলুদ) খালি থাকে।<br>':'')
+      +(cut===0&&!SHOPS_ON?'নিচতলা: উপরের তলার মতো একটি ফ্ল্যাট (২ বেড, ২ বাথ, ড্রয়িং, ডাইনিং, রান্নাঘর) — বারান্দা নেই। পশ্চিমে আলাদা ঢোকার পথ নেই: সবাই গাড়ির গেটের ছোট স্লাইডিং দরজা দিয়ে → পার্কিং → লবি → সিঁড়ি। পার্কিং: ২টি গাড়ি + বাইক।'
+        :cut===0?'নিচতলা: '+(SHOPN===3?'পশ্চিমের মেইন রোডমুখী ৩টি দোকান (প্রতিটি ~১০\'×১১\'-৯")।':'পশ্চিমের মেইন রোডমুখী ২টি দোকান (প্রতিটি ~১০\'×১১\'-৯") — উত্তরের দিকে দোকান নেই, সেখানে পার্কিং এর সাথে খোলা লবি।')+' পার্কিং: ২টি গাড়ি (একটার পেছনে একটা) + ৪টি বাইক, পশ্চিমের গাড়ির গেট দিয়ে ঢুকবে। বাসিন্দারা: গাড়ির গেটের ছোট স্লাইডিং দরজা → পার্কিং → ৩ ধাপ → সিঁড়ি (মাঝে দেয়াল নেই)। নিচতলার ফ্ল্যাট (১ বেড) — দরজা সিঁড়ির ল্যান্ডিং থেকে।'
+        :'প্রতি তলায় ২টি ফ্ল্যাট: প্রতিটিতে মাস্টার বেড + বেডরুম, ড্রয়িং, ডাইনিং, রান্নাঘর, অ্যাটাচড বাথ + কমন বাথ, পশ্চিমে বারান্দা।')
+      +'<br><b>দরজা:</b> D1 মেইন ৩\'-৬"×৭\' · D2 রুম ৩\'×৭\' · D3 বাথ/রান্নাঘর ২\'-৬"×৭\' · D4 বারান্দা ৩\'×৭\''
+      +(cut===0?' · দোকান: রোলিং শাটার ~৯\'×৮\' · গাড়ির গেট ১২\' (মানুষের জন্য ছোট স্লাইডিং দরজাসহ)':'');
+  } else {
+    info.innerHTML = '<b>৩ তলা আরসিসি বাড়ি</b><br>নিচতলা: '+(SHOPS_ON?'পশ্চিমের মেইন রোডমুখী '+(SHOPN===3?'৩':'২')+'টি দোকান + ১ বেডের ফ্ল্যাট':'১টি ফ্ল্যাট (২ বেড)')+' + পার্কিং (২টি গাড়ি, বাইক)<br>দোতলা ও তিনতলা: প্রতি তলায় ২টি ফ্ল্যাট · মোট ৫টি ফ্ল্যাট<br>প্লট ৪৫\'×৪৮\' · বিল্ডিং ৩৭\'-৬"×৪৩\'<br>প্রতি তলার উচ্চতা ১০\' · প্লিন্থ ২\' · প্যারাপেট ৩\'-৬"<br>ছাদে: সিঁড়ি ঘর + পানির ট্যাংক<br>মেইন রোড: পশ্চিমে (সামনে) · নিজস্ব রাস্তা: উত্তরে · পূর্বে নিজস্ব জমি<br>একটি গাড়ির গেট — তার মধ্যেই মানুষের জন্য ছোট স্লাইডিং দরজা';
+  }
+}
+const cutPlane = new THREE.Plane(new THREE.Vector3(0,-1,0), 1000);
+function applyState(){
+  clip.length = 0;
+  roomLbl.clear();
+  if (cut>=0){
+    const h = floorBase(cut) + 5.0;
+    cutPlane.constant = h; clip.push(cutPlane);
+    (cut===0?(SHOPN===3?ROOMS_G3:SHOPS_ON?ROOMS_G:ROOMS_GN).filter(r=>!(UNIT_ON && /^(পার্কিং|বাইক|স্টোর)/.test(r[0]))).concat(UNIT_ON?ROOMS_UNIT:[]):ROOMS_UP).forEach(([t,x,y])=>{ const s=textSprite(t,1.25,'#203040','rgba(255,255,255,0.88)'); s.position.set(x, floorBase(cut)+(t.startsWith('পার্কিং')?7.0:1.6), -y); roomLbl.add(s); });
+    DOORLBL.filter(d=>d[3]===cut && (cut!==0 || d[4]===(SHOPN===3?'shop3':SHOPN===2?'shop2':'noshop'))).forEach(([c,x,y])=>{ const p=textSprite(c,0.95,'#ffffff','rgba(107,63,31,0.92)'); p.position.set(x, floorBase(cut)+7.9, -y); roomLbl.add(p); });
+    if (cut===0){ (SHOPS_ON ? [['নিচতলার ফ্ল্যাটের দরজা',15.1,15.4,1.1,3.0],['3 ধাপ উপরে',SHOPN===3?15.0:8.0,27.9,1.0,1.2],['দোকানের টয়লেট (বাইরে থেকে) →',6.5,-1.3,1.1,2.0],['গাড়ির গেট + মানুষের জন্য ছোট স্লাইডিং দরজা',-7,38,1.3,7.5]]
+                                 : [['3 ধাপ উপরে',8.0,27.9,1.0,1.2],['গাড়ির গেট + মানুষের জন্য ছোট স্লাইডিং দরজা',-7,38,1.3,7.5]]).forEach(([t,x,y,sz,h])=>{ const p=textSprite(t,sz,'#7a1010','rgba(255,255,255,0.88)'); p.position.set(x, floorBase(0)+h, -y); roomLbl.add(p); }); }
+  }
+  groups.labels.children.forEach((s,i)=>{ s.visible = cut<0 || i>=4 || i===cut; });
+  groups.found.visible = fndView;
+  foundLbl.visible = fndView;
+  mat.grass.transparent = fndView; mat.grass.opacity = fndView?0.25:1; mat.grass.depthWrite = !fndView;
+  mat.pave.transparent = fndView; mat.pave.opacity = fndView?0.35:1; mat.pave.needsUpdate = true; mat.grass.needsUpdate = true;
+  mat.road.transparent = fndView; mat.road.opacity = fndView?0.35:1; mat.road.needsUpdate = true;
+  if (walk && cut>=0){ cutPlane.constant = floorBase(cut)+FH-SLAB-0.02; if (clip.indexOf(cutPlane)<0) clip.push(cutPlane); walkSolids=null; }   // walking: full-height walls, open sky above
+  setInfo();
+}
+document.querySelectorAll('[data-cut]').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('[data-cut]').forEach(x=>x.classList.remove('on')); b.classList.add('on');
+  cut = +b.dataset.cut; if (cut>=0 && fndView){ fndView=false; vExt.classList.add('on'); vFnd.classList.remove('on'); }
+  applyState();
+  if (cut>=0) fly([BW/2+48, floorBase(cut)+62, 30], [BW/2, floorBase(cut), -BD/2]);
+}));
+const vExt=document.getElementById('vExt'), vFnd=document.getElementById('vFnd');
+vExt.onclick=()=>{ fndView=false; vExt.classList.add('on'); vFnd.classList.remove('on'); applyState(); fly([-62,40,48],[BW/2,12,-BD/2]); };
+vFnd.onclick=()=>{ fndView=true; vFnd.classList.add('on'); vExt.classList.remove('on');
+  cut=-1; document.querySelectorAll('[data-cut]').forEach(x=>x.classList.toggle('on', x.dataset.cut==='-1'));
+  applyState(); fly([-45,6,42],[BW/2,-2,-BD/2]); };
+document.getElementById('cW').onclick=()=>fly([-88,24,-14],[BW/2,13,-BD/2]);
+document.getElementById('cNW').onclick=()=>fly([-62,40,-95],[BW/2,12,-BD/2]);
+document.getElementById('cSE').onclick=()=>fly([BW+60,34,46],[BW/2,12,-BD/2]);
+document.getElementById('cTop').onclick=()=>fly([BW/2+0.1,150,-BD/2+0.1],[BW/2,0,-BD/2]);
+const cSpin=document.getElementById('cSpin');
+cSpin.onclick=()=>{ spin=!spin; controls.autoRotate=spin; controls.autoRotateSpeed=0.8; cSpin.classList.toggle('on',spin); };
+
+// ---------- WALK THROUGH: first-person, eye height 5'-3", walls stop you, doors open ----------
+let walkSolids=null, yaw=0, pitch=0, lastT=0;
+const keys={}, pad={f:0,b:0,l:0,r:0}, wRay=new THREE.Raycaster(), EYE=5.25, WAIST=3.2;
+const walkUI=document.getElementById('walkUI'), walkHere=document.getElementById('walkHere');
+function visDeep(o){ while(o){ if(!o.visible) return false; o=o.parent; } return true; }
+function solids(){   // every visible thing that stands at waist height on this floor (walls, cupboards, fridge, railings...)
+  if (walkSolids) return walkSolids;
+  const y=floorBase(cut)+WAIST, out=[], bb=new THREE.Box3();
+  scene.traverse(o=>{ if(!o.isMesh || o.isSprite) return; const m=o.material; if(m===mat.doorLeaf||m===mat.door||m===mat.led) return;
+    if(!visDeep(o)) return; bb.setFromObject(o); if (bb.min.y<=y && bb.max.y>=y) out.push(o); });
+  return walkSolids=out;
+}
+function blocked(px,pz,dx,dz,dist){
+  const L=Math.hypot(dx,dz); if(!L) return false;
+  const objs=solids().filter(visDeep), y=floorBase(cut)+WAIST, dir=new THREE.Vector3(dx/L,0,dz/L);
+  wRay.set(new THREE.Vector3(px,y,pz), dir); wRay.far=dist+1.0;
+  return wRay.intersectObjects(objs,false).length>0;
+}
+const ROOMNAMES=()=> (cut===0?(SHOPN===3?ROOMS_G3:SHOPS_ON?ROOMS_G:ROOMS_GN).concat(UNIT_ON?ROOMS_UNIT:[]):ROOMS_UP);
+function whereAmI(){ const px=camera.position.x, py=-camera.position.z; let best='', bd=1e9;
+  ROOMNAMES().forEach(([t,x,y])=>{ const d=Math.hypot(px-x,py-y); if(d<bd){bd=d;best=t;} }); return bd<9?best.replace(/\s*\d+'.*$/,''):''; }
+function enterWalk(k){
+  walk=true; cut=k; fndView=false; walkSolids=null;
+  document.querySelectorAll('[data-cut]').forEach(x=>x.classList.toggle('on', +x.dataset.cut===k));
+  document.querySelectorAll('[data-wk]').forEach(x=>x.classList.toggle('on', +x.dataset.wk===k));
+  mat.doorLeaf.visible=false; mat.door.visible=false;   // doors shown open while walking
+  spin=false; controls.autoRotate=false; cSpin.classList.remove('on'); controls.enabled=false; flyAnim=null;
+  dimG.visible=false; roomLbl.visible=false;
+  applyState();
+  // start on the stair landing: upper floors look West at the two flat doors, ground looks South at the ground flat door
+  camera.position.set(15.2, floorBase(k)+EYE, -(k===0?23.5:21.4));
+  yaw = (k===0 && SHOPS_ON) ? Math.PI : Math.PI/2; pitch=-0.05;
+  camera.fov=72; camera.updateProjectionMatrix(); camera.rotation.order='YXZ';
+  document.body.classList.add('walking');
+}
+function exitWalk(){
+  walk=false; mat.doorLeaf.visible=true; mat.door.visible=true; controls.enabled=true;
+  dimG.visible=true; roomLbl.visible=true; document.getElementById('dimB').classList.add('on');
+  camera.fov=40; camera.updateProjectionMatrix(); camera.rotation.order='XYZ';
+  document.body.classList.remove('walking');
+  applyState(); camera.position.set(BW/2+48, floorBase(cut)+62, 30); controls.target.set(BW/2, floorBase(cut), -BD/2); camera.lookAt(controls.target);
+}
+document.getElementById('walkB').onclick=()=>enterWalk(cut>=0?cut:1);
+document.getElementById('walkExit').onclick=exitWalk;
+document.querySelectorAll('[data-wk]').forEach(b=>b.onclick=()=>enterWalk(+b.dataset.wk));
+document.querySelectorAll('[data-pad]').forEach(b=>{ const k=b.dataset.pad;
+  const on=e=>{ e.preventDefault(); pad[k]=1; }, off=()=>{ pad[k]=0; };
+  b.addEventListener('pointerdown',on); b.addEventListener('pointerup',off); b.addEventListener('pointerleave',off); b.addEventListener('pointercancel',off); });
+window.addEventListener('keydown',e=>{ if(!walk) return; keys[e.key.toLowerCase()]=true; if(e.key.startsWith('Arrow')) e.preventDefault(); if(e.key==='Escape') exitWalk(); });
+window.addEventListener('keyup',e=>{ keys[e.key.toLowerCase()]=false; });
+let drag=null;
+canvas.addEventListener('pointerdown',e=>{ if(walk) drag=[e.clientX,e.clientY]; });
+window.addEventListener('pointermove',e=>{ if(!walk||!drag) return; yaw-=(e.clientX-drag[0])*0.005; pitch=Math.max(-1.2,Math.min(1.2,pitch-(e.clientY-drag[1])*0.004)); drag=[e.clientX,e.clientY]; });
+window.addEventListener('pointerup',()=>{ drag=null; });
+function walkStep(dt){
+  const K=k=>keys[k]?1:0;
+  const turn=(K('arrowleft')+pad.l)-(K('arrowright')+pad.r); yaw+=turn*1.8*dt;
+  const fwd=(K('w')+K('arrowup')+pad.f)-(K('s')+K('arrowdown')+pad.b), side=K('d')-K('a');
+  const sp=(keys['shift']?10:5.5)*dt;
+  const fx=-Math.sin(yaw), fz=-Math.cos(yaw), rx=Math.cos(yaw), rz=-Math.sin(yaw);
+  let dx=(fx*fwd+rx*side)*sp, dz=(fz*fwd+rz*side)*sp; const p=camera.position;
+  if (dx||dz){
+    if (!blocked(p.x,p.z,dx,dz,Math.hypot(dx,dz))){ p.x+=dx; p.z+=dz; }
+    else { if (dx && !blocked(p.x,p.z,dx,0,Math.abs(dx))) p.x+=dx; else if (dz && !blocked(p.x,p.z,0,dz,Math.abs(dz))) p.z+=dz; }   // slide along the wall
+  }
+  p.y=floorBase(cut)+EYE;
+  camera.rotation.set(pitch,yaw,0);
+  const w=whereAmI(); if (walkHere.textContent!==w){ walkHere.textContent=bn(w); walkHere.style.display=w?'block':'none'; }
+}
+
+// camera fly animation
+let flyAnim=null;
+function fly(pos, tgt){
+  flyAnim = {t:0, p0:camera.position.clone(), p1:new THREE.Vector3(...pos), q0:controls.target.clone(), q1:new THREE.Vector3(...tgt)};
+}
+camera.position.set(-88,24,-14); controls.target.set(BW/2,13,-BD/2);
+// open with the road-corner view toward entrance
+
+
+// ---------- colour-coded walls (temporary, for clarity) ----------
+const WALLCOL = [
+  ['wall',  0xf5e2a0, 0xf6f6f3, 'বাইরের দেয়াল (10")'],
+  ['wallIn',0x9ccbe8, 0xfbf8f2, 'ফ্ল্যাটের ভেতরের দেয়াল (5")'],
+  ['wShop', 0xf2a65a, 0xfbf8f2, 'দোকানের দেয়াল'],
+  ['wCore', 0xb39ddb, 0xfbf8f2, 'সিঁড়ির দেয়াল'],
+  ['wPark', 0xe57373, 0xf6f6f3, 'পার্কিং এর দেয়াল'],
+  ['col',   0x7f8c99, 0xf6f6f3, 'আরসিসি কলাম'],
+];
+let wallsCoded = false;
+function setWallColors(on){
+  WALLCOL.forEach(([k,c,p])=>mat[k].color.setHex(on?c:p));
+  FCAT.forEach(([k,c,p])=>FM[k].color.setHex(on?c:p));
+  tintG.visible = on;
+  const lg=document.getElementById('legend');
+  const sw=(c,t)=>'<span style="display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-2px;margin-right:6px;background:#'+c.toString(16).padStart(6,'0')+';border:1px solid #0002"></span>'+bn(t);
+  lg.innerHTML = on ? '<b>দেয়াল</b><br>'+WALLCOL.map(([k,c,p,t])=>sw(c,t)).join('<br>')+'<br><b>আসবাব</b><br>'+FCAT.filter(f=>f[3]).map(([k,c,p,t])=>sw(c,t)).join('<br>')+'<br><b>মেঝে</b><br>'+Object.values(TINT).map(([c,t])=>sw(c,t)).join('<br>') : ''; if(false) lg.innerHTML = on ? WALLCOL.map(([k,c,p,t])=>'<span style="display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-2px;margin-right:6px;background:#'+c.toString(16).padStart(6,'0')+';border:1px solid #0002"></span>'+t).join('<br>') : '';
+  document.getElementById('wCol').classList.toggle('on',on);
+}
+document.getElementById('dimB').onclick=(e)=>{ dimG.visible=!dimG.visible; roomLbl.visible=dimG.visible; e.currentTarget.classList.toggle('on',dimG.visible); };
+document.getElementById('shB').onclick=(e)=>{ shuttersDown=!shuttersDown; shutterG.visible=shuttersDown && SHOPS_ON; e.currentTarget.classList.toggle('on',shuttersDown); e.currentTarget.textContent = shuttersDown?'শাটার: নামানো':'শাটার: উঠানো'; };
+let shuttersDown = true;
+function setShops(n){   // n = 3, 2 or 0 shops on the ground floor
+  SHOPN=n; const on=n>0; SHOPS_ON=on;
+  gShop.visible=on; gS3.visible=n===3; gS2.visible=n===2; gNo.visible=!on;
+  tShop.visible=on; tS3.visible=n===3; tS2.visible=n===2; tNo.visible=!on;
+  shS3.visible=n===3; shS2.visible=n===2; shutterG.visible = on && shuttersDown;
+  document.querySelectorAll('[data-shops]').forEach(b=>b.classList.toggle('on', +b.dataset.shops===n));
+  document.getElementById('shB').style.display = on ? '' : 'none';
+  if (walk) walkSolids=null;
+  applyState();
+}
+document.querySelectorAll('[data-shops]').forEach(b=>b.onclick=()=>setShops(+b.dataset.shops));
+function setUnit(on){ UNIT_ON=on; gUnit.visible=on; gCars.visible=!on; gParkOnly.visible=!on; const b=document.getElementById('unitB'); b.classList.toggle('on',on); b.textContent = on ? 'পার্কিং জায়গা: অস্থায়ী ইউনিট' : 'পার্কিং জায়গা: পার্কিং'; applyState(); }
+document.getElementById('unitB').onclick=()=>setUnit(!UNIT_ON);
+document.getElementById('wCol').onclick=()=>{ wallsCoded=!wallsCoded; setWallColors(wallsCoded); };
+setWallColors(false);
+
+
+// ---------- menu, help and info buttons ----------
+(function(){
+  const btn=document.getElementById('panelBtn'), small=()=>window.innerWidth<=760;
+  function apply(hidden){ document.body.classList.toggle('clean',hidden); btn.textContent = hidden ? '☰ মেনু' : '✕ মেনু বন্ধ'; }
+  let hidden = small();          // on phones the model shows first; the menu opens from the button
+  apply(hidden);
+  btn.onclick=()=>{ hidden=!hidden; apply(hidden); if(!hidden) document.body.classList.remove('showinfo'); };
+  // on phones, close the menu after a choice so the model is visible
+  document.querySelectorAll('.panel button').forEach(b=>b.addEventListener('click',()=>{ if(small() && b.id!=='wCol' && b.id!=='dimB'){ hidden=true; apply(true); } }));
+  const ib=document.getElementById('infoBtn');
+  ib.onclick=()=>{ const on=!document.body.classList.contains('showinfo'); document.body.classList.toggle('showinfo',on); if(on){ hidden=true; apply(true); } };
+  const help=on=>document.body.classList.toggle('showhelp',on);
+  document.getElementById('helpBtn').onclick=()=>help(true);
+  document.getElementById('helpOk').onclick=()=>{ help(false); try{ localStorage.setItem('seenHelp','1'); }catch(e){} };
+  document.getElementById('help').addEventListener('click',e=>{ if(e.target.id==='help') help(false); });
+  let seen=null; try{ seen=localStorage.getItem('seenHelp'); }catch(e){}
+  if (!seen) help(true);
+})();
+
+function resize(){
+  const w = window.innerWidth, h = window.innerHeight;
+  renderer.setSize(w,h,false); camera.aspect = w/h; camera.updateProjectionMatrix();
+}
+window.addEventListener('resize', resize); resize();
+applyState();
+setShops(2);
+
+function loop(){
+  requestAnimationFrame(loop);
+  if (flyAnim){
+    flyAnim.t = Math.min(1, flyAnim.t + 0.035);
+    const e = 1-Math.pow(1-flyAnim.t,3);
+    camera.position.lerpVectors(flyAnim.p0, flyAnim.p1, e);
+    controls.target.lerpVectors(flyAnim.q0, flyAnim.q1, e);
+    if (flyAnim.t>=1) flyAnim=null;
+  }
+  const now=performance.now(), dt=Math.min(0.05,(now-(lastT||now))/1000); lastT=now;
+  if (walk) walkStep(dt); else controls.update();
+  renderer.render(scene, camera);
+}
+loop();
+document.getElementById('loading').style.display='none';
+}
+(function(){
+  const go=()=>{ try{ MAIN(); }catch(e){ document.getElementById('loading').innerHTML='দুঃখিত, ৩ডি মডেল চালু হয়নি।<br><small>ব্রাউজার আপডেট করে আবার চেষ্টা করুন।</small>'; console.error(e); } };
+  if (!window.THREE){ document.getElementById('loading').innerHTML='ইন্টারনেট সংযোগ দেখে পেজটি আবার লোড করুন।'; return; }
+  const f = (document.fonts && document.fonts.load) ? Promise.all([document.fonts.load('600 40px "Hind Siliguri"'), document.fonts.load('700 40px "Hind Siliguri"')]) : Promise.resolve();
+  Promise.race([f, new Promise(r=>setTimeout(r,3000))]).then(go, go);
+})();
+</script>
+</body>
+</html>
