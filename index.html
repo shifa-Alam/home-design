@@ -80,6 +80,35 @@
     #walkTop button{padding:7px 9px;font-size:13px}
     #walkHere{top:auto;bottom:160px}
   }
+  #colPick{display:grid;grid-template-columns:1fr auto;gap:5px 8px;font-size:13px;align-items:center}
+  #colPick input{width:44px;height:26px;border:1px solid var(--line);border-radius:6px;padding:0;background:none;cursor:pointer}
+  #colReset{grid-column:1/3;margin-top:4px}
+  #roomPop{position:absolute;z-index:7;background:var(--card);border-radius:12px;padding:8px 12px;font-size:13.5px;line-height:1.55;box-shadow:0 6px 22px rgba(0,0,0,.2);pointer-events:none;display:none;max-width:240px;transform:translate(-50%,calc(-100% - 14px))}
+  #roomPop b{color:var(--blue)}
+  #toast{position:fixed;left:50%;top:80px;transform:translateX(-50%);background:#1d2733;color:#fff;padding:7px 16px;border-radius:20px;font-size:14px;z-index:25;display:none}
+  body.measuring #c{cursor:crosshair}
+  body.walking #roomPop{display:none!important}
+  #modal{position:fixed;inset:0;background:rgba(10,20,35,.55);display:none;align-items:center;justify-content:center;z-index:22;padding:16px}
+  body.showmodal #modal{display:flex}
+  #modal .box{position:relative;background:#fff;border-radius:16px;max-width:560px;width:100%;max-height:92vh;overflow:auto;padding:18px 20px;box-shadow:0 10px 40px rgba(0,0,0,.3)}
+  #modal.plan .box{max-width:920px}
+  #mClose{position:absolute;right:10px;top:10px;border-radius:50%;width:34px;height:34px;padding:0}
+  #modal h2{margin:0 36px 10px 0;font-size:20px;color:var(--blue)} #modal h3{font-size:15px;margin:14px 0 6px;color:var(--blue)}
+  .cgrid{display:grid;grid-template-columns:auto 1fr;gap:8px 12px;align-items:center;font-size:14px}
+  .cgrid input[type=number],.ctab input{font:inherit;padding:5px 8px;border:1px solid var(--line);border-radius:8px;width:100%;max-width:130px}
+  .chk{display:inline-flex;gap:4px;align-items:center;margin-right:10px;white-space:nowrap}
+  .cbig{display:flex;gap:10px;margin:14px 0 6px}.cbig div{flex:1;background:#eef4fa;border-radius:12px;padding:10px 12px}
+  .cbig small{display:block;color:#5b6775}.cbig b{font-size:20px;color:var(--blue)}
+  .note{font-size:12.5px;color:#5b6775;line-height:1.55;margin:6px 0}
+  .ctab{width:100%;border-collapse:collapse;font-size:13.5px}.ctab th,.ctab td{border-bottom:1px solid var(--line);padding:6px 4px;text-align:left}
+  .ctab input{max-width:90px}.ctab .tot td{font-weight:700;border-bottom:0}
+  .mbtns{display:flex;gap:8px;justify-content:flex-end;margin-top:12px}
+  .btnl{font-size:14px;border:1px solid var(--line);border-radius:10px;padding:7px 11px;color:var(--txt);text-decoration:none;background:#fff}
+  #planImg{width:100%;border:1px solid var(--line);border-radius:8px;margin-top:10px;display:block}
+  .btns.pl{margin-top:4px}
+  @media (max-width:520px){ .cgrid{grid-template-columns:1fr} .cbig{flex-direction:column} }
+  @media print{ body{overflow:visible;height:auto;background:#fff} body>*:not(#modal){display:none!important} #modal{position:static;display:block!important;background:none;padding:0}
+    #modal .box{box-shadow:none;max-height:none;max-width:none;padding:0} #mClose,.mbtns,.btns.pl{display:none!important} }
 </style>
 </head>
 <body>
@@ -125,8 +154,20 @@
     <button id="shB" class="on">শাটার: নামানো</button>
     <button id="unitB">পার্কিং জায়গা: পার্কিং</button>
   </div>
+  <div class="grp">🧰 টুলস</div>
+  <div class="btns">
+    <button id="measB">📐 দূরত্ব মাপুন</button>
+    <button id="shotB">📷 ছবি সেভ</button>
+    <button id="linkB">🔗 এই ভিউ এর লিংক</button>
+    <button id="planB">🗺️ ২ডি নকশা</button>
+    <button id="costB">💰 খরচের হিসাব</button>
+  </div>
+  <div class="grp">🎨 নিজের পছন্দের রঙ</div>
+  <div id="colPick"></div>
 </div>
 <div class="info" id="info"></div>
+<div id="modal"><div class="box"><button id="mClose" aria-label="বন্ধ">✕</button><div id="mBody"></div></div></div>
+<div id="roomPop"></div><div id="toast"></div>
 <div id="walkUI">
   <div id="walkTop"><b>হাঁটছেন:</b>
     <button data-wk="0">নিচতলা</button><button data-wk="1">দোতলা</button><button data-wk="2">তিনতলা</button>
@@ -1349,6 +1390,186 @@ setWallColors(false);
   if (!seen) help(true);
 })();
 
+// ---------- extra tools: room info on click, measuring, screenshot, share link, colour picker ----------
+const toastEl=document.getElementById('toast'), pop=document.getElementById('roomPop');
+let toastT=0; function toast(t){ toastEl.textContent=t; toastEl.style.display='block'; clearTimeout(toastT); toastT=setTimeout(()=>toastEl.style.display='none',2200); }
+const pickRay=new THREE.Raycaster(), ndc=new THREE.Vector2();
+function pickAt(cx,cy){
+  const r=canvas.getBoundingClientRect(); ndc.set((cx-r.left)/r.width*2-1, -(cy-r.top)/r.height*2+1);
+  pickRay.setFromCamera(ndc,camera);
+  const hits=pickRay.intersectObjects(scene.children,true).filter(h=>h.object.isMesh && visDeep(h.object)
+    && !(h.object.material && h.object.material.transparent && h.object.material.opacity<0.5)
+    && clip.every(pl=>pl.distanceToPoint(h.point)>=-0.01));
+  return hits[0]||null;
+}
+const ftin=f=>{ let ft=Math.floor(f), inch=Math.round((f-ft)*12); if(inch===12){ft++;inch=0;} return bn(ft+"'-"+inch+'"'); };
+function roomSize(name){ const m=name.match(/(\d+)'(?:-(\d+)")?\s*x\s*(\d+)'(?:-(\d+)")?/); if(!m) return null;
+  return [ +m[1]+(+m[2]||0)/12, +m[3]+(+m[4]||0)/12 ]; }
+function groundRooms(){ return (SHOPN===3?ROOMS_G3:SHOPS_ON?ROOMS_G:ROOMS_GN).filter(r=>!(UNIT_ON && /^(পার্কিং|বাইক|স্টোর)/.test(r[0]))).concat(UNIT_ON?ROOMS_UNIT:[]); }
+function roomInfo(pt, cx, cy){
+  const k=Math.max(0,Math.min(NF-1,Math.floor((pt.y-PL+0.3)/FH)));
+  const list = k===0 ? groundRooms() : ROOMS_UP;
+  const px=pt.x, py=-pt.z; let best=null, bd=1e9;
+  if (pt.y>=PL-0.5 && pt.y<ROOF-0.5) list.forEach(r=>{ const d=Math.hypot(px-r[1],py-r[2]); if(d<bd){bd=d;best=r;} });
+  let h;
+  if (best && bd<8){
+    const nm=best[0].replace(/\s*\d+'.*$/,''), sz=roomSize(best[0]);
+    h='<b>'+bn(nm)+'</b> · '+floorNames[k];
+    if (sz){ const a=sz[0]*sz[1]; h+='<br>মাপ: '+ftin(sz[0])+' × '+ftin(sz[1])+'<br>আয়তন: '+bn(Math.round(a))+' বর্গফুট ('+bn((a*0.0929).toFixed(1))+' বর্গমিটার)'; }
+    if (cut<0) h+='<br><small>ভেতর দেখতে মেনু থেকে তলা বেছে নিন</small>';
+  } else if (pt.y>=ROOF-0.5) h='<b>ছাদ</b><br>মাটি থেকে উচ্চতা ~'+ftin(pt.y);
+  else h='<b>'+(pt.y<PL-0.5?'প্লট / রাস্তা':floorNames[k])+'</b><br><small>ঘরের তথ্য পেতে ঘরের মেঝেতে ক্লিক করুন</small>';
+  pop.innerHTML=h; pop.style.left=cx+'px'; pop.style.top=cy+'px'; pop.style.display='block';
+}
+// measuring
+const measG=new THREE.Group(); scene.add(measG);
+const measMat=new THREE.MeshBasicMaterial({color:0x0a7d3b, depthTest:false});
+let measuring=false, measA=null;
+const measB=document.getElementById('measB');
+function setMeasure(on){ measuring=on; measA=null; measB.classList.toggle('on',on); document.body.classList.toggle('measuring',on);
+  measB.textContent = on ? '📐 মাপা বন্ধ করুন' : '📐 দূরত্ব মাপুন'; if(!on) measG.clear(); pop.style.display='none';
+  if(on) toast('দুটি জায়গায় ক্লিক করুন — দূরত্ব দেখাবে'); }
+measB.onclick=()=>setMeasure(!measuring);
+function dot(p){ const m=new THREE.Mesh(new THREE.SphereGeometry(0.35,12,8),measMat); m.position.copy(p); m.renderOrder=10; measG.add(m); }
+function measureClick(p){
+  if (!measA){ measA=p.clone(); dot(p); return; }
+  const a=measA, len=a.distanceTo(p); dot(p);
+  const bar=new THREE.Mesh(new THREE.BoxGeometry(0.15,0.15,Math.max(len,0.01)),measMat); bar.position.copy(a.clone().add(p).multiplyScalar(0.5)); bar.lookAt(p); bar.renderOrder=10; measG.add(bar);
+  const s=textSprite(ftin(len)+' ('+bn((len*0.3048).toFixed(2))+' মি)',2.2,'#ffffff','rgba(10,125,59,0.92)');
+  s.position.copy(a.clone().add(p).multiplyScalar(0.5)).add(new THREE.Vector3(0,1.4,0)); s.material.depthTest=false; s.renderOrder=11; measG.add(s);
+  measA=null;
+}
+// click handling (ignore drags)
+let downAt=null;
+canvas.addEventListener('pointerdown',e=>{ downAt=[e.clientX,e.clientY]; });
+canvas.addEventListener('pointerup',e=>{
+  if (walk || !downAt) return; const moved=Math.hypot(e.clientX-downAt[0],e.clientY-downAt[1]); downAt=null; if (moved>6) return;
+  const h=pickAt(e.clientX,e.clientY); if(!h){ pop.style.display='none'; return; }
+  if (measuring) measureClick(h.point); else roomInfo(h.point,e.clientX,e.clientY);
+});
+controls.addEventListener('start',()=>{ pop.style.display='none'; });
+// screenshot (render then read in the same tick, so no preserveDrawingBuffer needed)
+document.getElementById('shotB').onclick=()=>{
+  renderer.render(scene,camera);
+  const a=document.createElement('a'); a.href=canvas.toDataURL('image/png'); a.download='shifar-bari-'+Date.now()+'.png';
+  document.body.appendChild(a); a.click(); a.remove(); toast('ছবি সেভ হয়েছে');
+};
+// colour picker
+const PICK=[['wall','বাইরের দেয়াল'],['wallIn','ভেতরের দেয়াল'],['band','বাইরের বর্ডার/ব্যান্ড'],['floorA','ঘরের মেঝে'],['floorB','অন্য মেঝে'],['frame','জানালার ফ্রেম'],['doorLeaf','দরজা']].filter(([k])=>mat[k]);
+const DEF={}; PICK.forEach(([k])=>DEF[k]=mat[k].color.getHex());
+const hex=n=>'#'+n.toString(16).padStart(6,'0');
+const colBox=document.getElementById('colPick');
+colBox.innerHTML=PICK.map(([k,t])=>'<label for="cp_'+k+'">'+t+'</label><input type="color" id="cp_'+k+'" value="'+hex(DEF[k])+'">').join('')+'<button id="colReset">↺ আগের রঙে ফেরত</button>';
+function setCol(k,v){ if(wallsCoded){ wallsCoded=false; setWallColors(false); }
+  mat[k].color.setHex(v); const w=WALLCOL.find(r=>r[0]===k); if(w) w[2]=v; document.getElementById('cp_'+k).value=hex(v); }
+PICK.forEach(([k])=>document.getElementById('cp_'+k).addEventListener('input',e=>setCol(k,parseInt(e.target.value.slice(1),16))));
+document.getElementById('colReset').onclick=()=>PICK.forEach(([k])=>setCol(k,DEF[k]));
+// share link: camera + floor + options + colours in the URL hash
+document.getElementById('linkB').onclick=()=>{
+  const r=v=>v.toFixed(1), c=camera.position, t=controls.target;
+  const q=new URLSearchParams({v:[c.x,c.y,c.z,t.x,t.y,t.z].map(r).join(','), f:cut, s:SHOPN, n:night?1:0, u:UNIT_ON?1:0,
+    col:PICK.map(([k])=>mat[k].color.getHex()===DEF[k]?'':mat[k].color.getHexString()).join(',')});
+  const url=location.href.split('#')[0]+'#'+q.toString(); history.replaceState(null,'',url);
+  const ok=()=>toast('লিংক কপি হয়েছে — যে কাউকে পাঠান'), bad=()=>prompt('এই লিংকটি কপি করুন:',url);
+  if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(url).then(ok,bad); else bad();
+};
+function restoreView(){
+  if (location.hash.length<3) return;
+  try{
+    const q=new URLSearchParams(location.hash.slice(1));
+    if (q.has('s') && [0,2,3].includes(+q.get('s'))) setShops(+q.get('s'));
+    if (q.get('u')==='1') setUnit(true);
+    if (q.get('n')==='1') setNight(true);
+    if (q.has('col')) q.get('col').split(',').forEach((h,i)=>{ if(/^[0-9a-f]{6}$/i.test(h) && PICK[i]) setCol(PICK[i][0],parseInt(h,16)); });
+    if (q.has('f')){ const f=+q.get('f'); const b=document.querySelector('[data-cut="'+f+'"]'); if(b){ document.querySelectorAll('[data-cut]').forEach(x=>x.classList.toggle('on',x===b)); cut=f; applyState(); } }
+    const v=(q.get('v')||'').split(',').map(Number);
+    if (v.length===6 && v.every(isFinite)){ camera.position.set(v[0],v[1],v[2]); controls.target.set(v[3],v[4],v[5]); controls.update(); }
+    document.body.classList.remove('showhelp');
+  }catch(e){ console.warn('bad view link',e); }
+}
+
+// ---------- modal helper ----------
+const modal=document.getElementById('modal'), mBody=document.getElementById('mBody');
+function openModal(html,cls){ mBody.innerHTML=html; modal.className=cls||''; document.body.classList.add('showmodal'); }
+function closeModal(){ document.body.classList.remove('showmodal'); }
+document.getElementById('mClose').onclick=closeModal;
+modal.addEventListener('click',e=>{ if(e.target===modal) closeModal(); });
+window.addEventListener('keydown',e=>{ if(e.key==='Escape' && document.body.classList.contains('showmodal')) closeModal(); });
+const tk=n=>bn(Math.round(n).toLocaleString('en-IN'));
+
+// ---------- cost & material estimate (rules of thumb for RCC buildings in Bangladesh) ----------
+const STAIR_ROOM = 12.92*9.17;   // roof stair room, sq ft
+const MATS=[ // key, name, unit, qty per sq ft, default unit price (Tk)
+  ['rod','রড','কেজি',4.0,95],['cement','সিমেন্ট','ব্যাগ',0.45,540],['brick','ইট','টি',20,13],
+  ['sand','বালি','সিএফটি',2.0,35],['stone','পাথর/খোয়া','সিএফটি',1.2,200]];
+const CS={rate:3000, fl:[1,1,1], st:1, price:Object.fromEntries(MATS.map(m=>[m[0],m[4]]))};
+try{ Object.assign(CS, JSON.parse(localStorage.getItem('costSet')||'{}')); }catch(e){}
+function costHTML(){
+  const per=BW*BD, area=CS.fl.reduce((a,on)=>a+(on?per:0),0)+(CS.st?STAIR_ROOM:0);
+  let matTot=0;
+  const rows=MATS.map(([k,n,u,q])=>{ const qty=area*q, c=qty*CS.price[k]; matTot+=c;
+    return '<tr><td>'+n+'</td><td>'+tk(qty)+' '+u+'</td><td><input type="number" min="0" data-pr="'+k+'" value="'+CS.price[k]+'"></td><td>৳ '+tk(c)+'</td></tr>'; }).join('');
+  const total=area*CS.rate;
+  return '<h2>💰 খরচের আনুমানিক হিসাব</h2>'
+   +'<div class="cgrid"><label>প্রতি বর্গফুট খরচ (৳)</label><input type="number" min="0" step="100" id="cRate" value="'+CS.rate+'">'
+   +'<label>কোন তলাগুলো ধরবেন</label><div>'+floorNames.map((f,i)=>'<label class="chk"><input type="checkbox" data-fl="'+i+'"'+(CS.fl[i]?' checked':'')+'> '+f+'</label>').join('')
+   +'<label class="chk"><input type="checkbox" id="cSt"'+(CS.st?' checked':'')+'> ছাদের সিঁড়ি ঘর</label></div></div>'
+   +'<div class="cbig"><div><small>মোট নির্মাণ এলাকা</small><b>'+tk(area)+' বর্গফুট</b></div><div><small>মোট আনুমানিক খরচ</small><b>৳ '+tk(total)+'</b></div></div>'
+   +'<p class="note">প্রতি তলা '+tk(per)+' বর্গফুট ('+bn("37'-6\" × 43'")+')। এই রেটে ফাউন্ডেশন, স্ট্রাকচার, ইট, প্লাস্টার, টাইলস, স্যানিটারি, ইলেকট্রিক ও রং ধরা হয়েছে।</p>'
+   +'<h3>প্রধান উপকরণ (আনুমানিক)</h3><table class="ctab"><tr><th>উপকরণ</th><th>পরিমাণ</th><th>দাম/একক ৳</th><th>খরচ</th></tr>'+rows
+   +'<tr class="tot"><td colspan="3">উপকরণের মোট (শুধু এই ৫টি)</td><td>৳ '+tk(matTot)+'</td></tr></table>'
+   +'<p class="note">⚠️ এগুলো সাধারণ হিসাব (প্রতি বর্গফুটে রড ~৪ কেজি, সিমেন্ট ~০.৪৫ ব্যাগ, ইট ~২০টি)। আসল হিসাব স্ট্রাকচারাল ডিজাইন ও BOQ থেকে নিন। দাম বদলাতে ঘরে নতুন সংখ্যা লিখুন।</p>'
+   +'<div class="mbtns"><button id="cReset">↺ ডিফল্ট দাম</button><button id="cPrint">🖨️ প্রিন্ট</button></div>';
+}
+function saveCS(){ try{ localStorage.setItem('costSet',JSON.stringify(CS)); }catch(e){} }
+function showCost(){
+  openModal(costHTML(),'cost');
+  const re=()=>{ const st=mBody.parentNode.scrollTop; saveCS(); showCost(); mBody.parentNode.scrollTop=st; };
+  document.getElementById('cRate').onchange=e=>{ CS.rate=Math.max(0,+e.target.value||0); re(); };
+  mBody.querySelectorAll('[data-fl]').forEach(c=>c.onchange=()=>{ CS.fl[+c.dataset.fl]=c.checked?1:0; re(); });
+  document.getElementById('cSt').onchange=e=>{ CS.st=e.target.checked?1:0; re(); };
+  mBody.querySelectorAll('[data-pr]').forEach(i=>i.onchange=()=>{ CS.price[i.dataset.pr]=Math.max(0,+i.value||0); re(); });
+  document.getElementById('cReset').onclick=()=>{ CS.rate=3000; MATS.forEach(m=>CS.price[m[0]]=m[4]); re(); };
+  document.getElementById('cPrint').onclick=()=>window.print();
+}
+document.getElementById('costB').onclick=showCost;
+
+// ---------- 2D floor plan: orthographic top view of one floor, with labels & sizes ----------
+const orthoCam=new THREE.OrthographicCamera(-1,1,1,-1,1,600);
+function planImage(k){
+  const W=1600, H=Math.round(W*(PY1-PY0+14)/(PX1-PX0+14));
+  const keep={cut, size:renderer.getSize(new THREE.Vector2()), pr:renderer.getPixelRatio(), fog:scene.fog, dim:dimG.visible, rl:roomLbl.visible, meas:measG.visible, wf:fndView};
+  cut=k; fndView=false; applyState(); dimG.visible=false; roomLbl.visible=true; measG.visible=false; scene.fog=null;
+  const cx=(PX0+PX1)/2, cz=-(PY0+PY1)/2, hw=(PX1-PX0)/2+7, hh=(PY1-PY0)/2+7;
+  orthoCam.left=-hw; orthoCam.right=hw; orthoCam.top=hh; orthoCam.bottom=-hh; orthoCam.updateProjectionMatrix();
+  orthoCam.position.set(cx,300,cz); orthoCam.up.set(0,0,-1); orthoCam.lookAt(cx,0,cz);
+  renderer.setPixelRatio(1); renderer.setSize(W,H,false); renderer.render(scene,orthoCam);
+  // compose on a 2D canvas: white paper, title, north arrow, scale bar
+  const pc=document.createElement('canvas'); pc.width=W; pc.height=H+130; const g=pc.getContext('2d');
+  g.fillStyle='#fff'; g.fillRect(0,0,pc.width,pc.height); g.drawImage(canvas,0,90,W,H);
+  g.fillStyle='#1f4f8a'; g.font='700 40px "Hind Siliguri",sans-serif'; g.fillText('শিফার বাড়ি — '+floorNames[k]+' এর নকশা',30,58);
+  g.fillStyle='#5b6775'; g.font='500 22px "Hind Siliguri",sans-serif'; g.fillText(bn("প্লট 45' × 48' · বিল্ডিং 37'-6\" × 43' · উত্তর উপরে"),30,H+125-40);
+  const ppf=W/(2*hw), bx=W-60-20*ppf, by=H+70;   // 20 ft scale bar
+  g.fillStyle='#1d2733'; for(let i=0;i<4;i++){ if(i%2===0) g.fillRect(bx+i*5*ppf,by,5*ppf,10); } g.strokeRect(bx,by,20*ppf,10);
+  g.font='600 20px "Hind Siliguri",sans-serif'; g.fillText(bn("0"),bx-6,by+34); g.fillText(bn("20'"),bx+20*ppf-14,by+34);
+  g.save(); g.translate(W-60,40); g.fillStyle='#b23a2a'; g.beginPath(); g.moveTo(0,-26); g.lineTo(13,14); g.lineTo(0,6); g.lineTo(-13,14); g.closePath(); g.fill();
+  g.fillStyle='#1d2733'; g.font='700 22px sans-serif'; g.textAlign='center'; g.fillText('N',0,38); g.restore();
+  const url=pc.toDataURL('image/png');
+  // restore
+  scene.fog=keep.fog; dimG.visible=keep.dim; roomLbl.visible=keep.rl; measG.visible=keep.meas; cut=keep.cut; fndView=keep.wf;
+  renderer.setPixelRatio(keep.pr); renderer.setSize(keep.size.x,keep.size.y,false); applyState();
+  return url;
+}
+function showPlan(k){
+  const url=planImage(k);
+  openModal('<h2>🗺️ ২ডি নকশা (ফ্লোর প্ল্যান)</h2><div class="btns pl">'+floorNames.map((f,i)=>'<button data-pl="'+i+'"'+(i===k?' class="on"':'')+'>'+f+'</button>').join('')+'</div>'
+    +'<img id="planImg" src="'+url+'" alt="'+floorNames[k]+' এর নকশা">'
+    +'<div class="mbtns"><a class="btnl" download="shifar-bari-plan-'+(k+1)+'.png" href="'+url+'">⬇️ ছবি সেভ</a><button id="pPrint">🖨️ প্রিন্ট / PDF</button></div>','plan');
+  mBody.querySelectorAll('[data-pl]').forEach(b=>b.onclick=()=>showPlan(+b.dataset.pl));
+  document.getElementById('pPrint').onclick=()=>window.print();
+}
+document.getElementById('planB').onclick=()=>showPlan(cut>=0?cut:1);
+
 function resize(){
   const w = window.innerWidth, h = window.innerHeight;
   renderer.setSize(w,h,false); camera.aspect = w/h; camera.updateProjectionMatrix();
@@ -1357,6 +1578,7 @@ window.addEventListener('resize', resize); resize();
 applyState();
 setShops(2);
 
+restoreView();
 function loop(){
   requestAnimationFrame(loop);
   if (flyAnim){
