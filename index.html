@@ -134,6 +134,19 @@
   .toggles button span{font-size:16px}
   .tip{font-size:12.5px;color:#5b6775;background:#fff8e1;border-radius:10px;padding:8px 10px;margin:10px 0 0;line-height:1.5}
   @media (max-width:760px){ .seg button{font-size:13px;padding:9px 2px} .tabs{top:-6px} }
+  .sunbox{background:#fffaf0;border:1px solid #f3e2c0;border-radius:12px;padding:8px 10px}
+  .sunbox.off #sunInfo{display:none}
+  .sunrow{display:flex;gap:6px;align-items:center;justify-content:space-between;font-size:13.5px;margin-bottom:6px}
+  .sunrow button{flex:1;padding:7px 6px;font-size:13px}
+  #sunB.on{background:#f5a623;border-color:#f5a623;color:#fff}
+  #sunM{font:inherit;font-size:13px;padding:4px 6px;border:1px solid var(--line);border-radius:8px;background:#fff}
+  #sunH{width:100%;accent-color:#f5a623}
+  .sunscale{display:flex;justify-content:space-between;font-size:11px;color:#8a7a5a;margin-top:-2px}
+  #sunInfo{font-size:12.5px;color:#5b4a2a;margin-top:4px;line-height:1.5}
+  #miniBox{position:fixed;right:12px;top:72px;z-index:6;background:var(--card);border-radius:12px;padding:6px;box-shadow:0 4px 18px rgba(0,0,0,.2);width:170px;text-align:center}
+  #mini{width:100%;height:auto;display:block;border-radius:8px;background:#e9eef2;cursor:pointer;touch-action:none}
+  #miniBox small{display:block;font-size:10.5px;color:#5b6775;line-height:1.3;margin-top:3px}
+  @media (max-width:760px){ #miniBox{width:120px;top:auto;bottom:170px;right:10px} #miniBox small{display:none} }
 </style>
 </head>
 <body>
@@ -182,6 +195,14 @@
       <button id="vFnd">🧱 ফাউন্ডেশন</button>
     </div>
     <div id="legend"></div>
+    <div class="grp">☀️ সূর্যের আলো ও ছায়া <small>যেকোনো সময়ের</small></div>
+    <div class="sunbox off">
+      <div class="sunrow"><button id="sunB">☀️ চালু করুন</button><button id="sunPlay">▶ সারাদিন চালান</button></div>
+      <div class="sunrow"><span>সময়: <b id="sunT"></b></span><select id="sunM" aria-label="মাস"></select></div>
+      <input type="range" id="sunH" min="5" max="19" step="0.1" value="9" aria-label="সময়">
+      <div class="sunscale"><span>ভোর</span><span>দুপুর</span><span>সন্ধ্যা</span></div>
+      <div id="sunInfo"></div>
+    </div>
   </section>
 
   <section class="pane" data-pane="tools">
@@ -216,6 +237,7 @@
 <div id="modal"><div class="box"><button id="mClose" aria-label="বন্ধ">✕</button><div id="mBody"></div></div></div>
 <div id="roomPop"></div><div id="toast"></div>
 <div id="walkUI">
+  <div id="miniBox"><canvas id="mini" width="300" height="335" aria-label="ছোট ম্যাপ"></canvas><small>ম্যাপে চাপ দিলে সেখানে চলে যাবেন</small></div>
   <div id="walkTop"><b>হাঁটছেন:</b>
     <button data-wk="0">নিচতলা</button><button data-wk="1">দোতলা</button><button data-wk="2">তিনতলা</button>
     <button id="walkExit">✕ বের হন</button></div>
@@ -1350,6 +1372,7 @@ function enterWalk(k){
   yaw = (k===0 && SHOPS_ON) ? Math.PI : Math.PI/2; pitch=-0.05;
   camera.fov=72; camera.updateProjectionMatrix(); camera.rotation.order='YXZ';
   document.body.classList.add('walking');
+  snapMini();
 }
 function exitWalk(){
   walk=false; mat.doorLeaf.visible=true; mat.door.visible=true; controls.enabled=true;
@@ -1442,7 +1465,7 @@ setWallColors(false);
   apply(hidden);
   btn.onclick=()=>{ hidden=!hidden; apply(hidden); if(!hidden) document.body.classList.remove('showinfo'); };
   // on phones, close the menu after a choice so the model is visible
-  document.querySelectorAll('.panel button').forEach(b=>b.addEventListener('click',()=>{ if(small() && !b.classList.contains('tab') && !['wCol','dimB','nightB','cSpin','colReset','shB','unitB'].includes(b.id)){ hidden=true; apply(true); } }));
+  document.querySelectorAll('.panel button').forEach(b=>b.addEventListener('click',()=>{ if(small() && !b.classList.contains('tab') && !['wCol','dimB','nightB','cSpin','colReset','shB','unitB','sunB','sunPlay'].includes(b.id)){ hidden=true; apply(true); } }));
   const ib=document.getElementById('infoBtn');
   ib.onclick=()=>{ const on=!document.body.classList.contains('showinfo'); document.body.classList.toggle('showinfo',on); if(on){ hidden=true; apply(true); } };
   const help=on=>document.body.classList.toggle('showhelp',on);
@@ -1642,6 +1665,85 @@ document.getElementById('planB').onclick=()=>showPlan(cut>=0?cut:1);
   tabs.forEach(b=>b.addEventListener('click',()=>show(b.dataset.tab)));
   let t=null; try{ t=localStorage.getItem('menuTab'); }catch(e){} if(t && tabs.some(b=>b.dataset.tab===t)) show(t);
 })();
+// ---------- SUN SIMULATION: real sun position for Bangladesh (~23.8° N) by month and time ----------
+const LAT = 23.8 * Math.PI/180;
+const sunTarget = new THREE.Object3D(); sunTarget.position.set(BW/2, 0, -BD/2); scene.add(sunTarget);
+const SUN_DEF = { pos: sun.position.clone(), col: sun.color.getHex(), int: sun.intensity, target: sun.target };
+const MONTHS = ['জানুয়ারি','ফেব্রুয়ারি','মার্চ','এপ্রিল','মে','জুন','জুলাই','আগস্ট','সেপ্টেম্বর','অক্টোবর','নভেম্বর','ডিসেম্বর'];
+const sunH=document.getElementById('sunH'), sunM=document.getElementById('sunM'), sunB=document.getElementById('sunB'), sunPlay=document.getElementById('sunPlay');
+sunM.innerHTML = MONTHS.map((m,i)=>'<option value="'+i+'">'+m+'</option>').join(''); sunM.value = new Date().getMonth();
+let sunOn=false, sunNight=false, sunAnim=false;
+function compass(az){ return ['উত্তর','উত্তর-পূর্ব','পূর্ব','দক্ষিণ-পূর্ব','দক্ষিণ','দক্ষিণ-পশ্চিম','পশ্চিম','উত্তর-পশ্চিম'][Math.round(az/45)%8]; }
+function clock(h){ const hh=Math.floor(h), mm=Math.round((h-hh)*60), p=hh<12?'সকাল':hh<15?'দুপুর':hh<18?'বিকেল':'সন্ধ্যা';
+  return p+' '+bn(((hh+11)%12+1)+':'+String(mm).padStart(2,'0')); }
+function applySun(){
+  const h=+sunH.value, mo=+sunM.value, N=Math.round(mo*30.4+15);              // mid-month day of the year
+  const dec=23.44*Math.PI/180*Math.sin(2*Math.PI*(284+N)/365), H=(h-12)*15*Math.PI/180;
+  const el=Math.asin(Math.sin(LAT)*Math.sin(dec)+Math.cos(LAT)*Math.cos(dec)*Math.cos(H));
+  let az=Math.atan2(Math.sin(H), Math.cos(H)*Math.sin(LAT)-Math.tan(dec)*Math.cos(LAT)) + Math.PI;   // from North, clockwise
+  document.getElementById('sunT').textContent=clock(h);
+  const info=document.getElementById('sunInfo');
+  if (el<=0.01){
+    if(!night){ setNight(true); sunNight=true; }
+    info.textContent='🌙 সূর্য ডুবে গেছে — রাতের দৃশ্য'; return;
+  }
+  if (sunNight){ setNight(false); sunNight=false; }
+  const d=new THREE.Vector3(Math.sin(az)*Math.cos(el), Math.sin(el), -Math.cos(az)*Math.cos(el));   // x=East, y=Up, z=South
+  sun.target=sunTarget; sun.position.copy(sunTarget.position).addScaledVector(d,180);
+  const k=Math.min(1,Math.sin(el)*2.2);
+  sun.intensity=0.35+1.15*k; sun.color.setRGB(1, 0.72+0.2*k, 0.5+0.32*k);
+  if (hemi) hemi.intensity=0.25+0.2*k;
+  info.textContent='সূর্য '+compass(az*180/Math.PI)+' দিকে, '+bn(Math.round(el*180/Math.PI))+'° উঁচুতে · ছায়া পড়ছে '+compass((az*180/Math.PI+180)%360)+' দিকে';
+}
+function setSun(on){
+  sunOn=on; sunB.classList.toggle('on',on); sunB.innerHTML = on ? '☀️ চালু আছে' : '☀️ চালু করুন';
+  document.querySelector('.sunbox').classList.toggle('off',!on);
+  if (on) applySun();
+  else { sunAnim=false; sunPlay.textContent='▶ সারাদিন চালান'; if(sunNight){ setNight(false); sunNight=false; }
+    sun.position.copy(SUN_DEF.pos); sun.target=SUN_DEF.target; sun.color.setHex(SUN_DEF.col); sun.intensity=night?0.12:SUN_DEF.int; if(hemi) hemi.intensity=night?0.12:0.45;
+    document.getElementById('sunInfo').textContent=''; }
+}
+sunB.onclick=()=>setSun(!sunOn);
+sunH.addEventListener('input',()=>{ if(!sunOn) setSun(true); else applySun(); });
+sunM.addEventListener('change',()=>{ if(!sunOn) setSun(true); else applySun(); });
+sunPlay.onclick=()=>{ if(!sunOn) setSun(true); sunAnim=!sunAnim; sunPlay.textContent = sunAnim ? '⏸ থামান' : '▶ সারাদিন চালান'; if(sunAnim && +sunH.value>=18.9) sunH.value=5.5; };
+function sunTick(dt){ if(!sunAnim) return; let h=+sunH.value+dt*0.9; if(h>19){ h=19; sunAnim=false; sunPlay.textContent='▶ সারাদিন চালান'; } sunH.value=h; applySun(); }
+document.getElementById('sunT').textContent=clock(+sunH.value);
+
+// ---------- WALK MINI-MAP: top view of the current floor, "you are here", tap to jump ----------
+const mini=document.getElementById('mini'), mctx=mini.getContext('2d'), miniBase=document.createElement('canvas');
+const MX0=-2, MX1=BW+2, MY0=-2, MY1=BD+2;      // plan window shown on the map (feet)
+miniBase.width=mini.width; miniBase.height=mini.height;
+function snapMini(){
+  const keep={fog:scene.fog, lab:groups.labels.visible, sz:renderer.getSize(new THREE.Vector2()), pr:renderer.getPixelRatio()};
+  scene.fog=null; groups.labels.visible=false;
+  orthoCam.left=-(MX1-MX0)/2; orthoCam.right=(MX1-MX0)/2; orthoCam.top=(MY1-MY0)/2; orthoCam.bottom=-(MY1-MY0)/2; orthoCam.updateProjectionMatrix();
+  const cx=(MX0+MX1)/2, cz=-(MY0+MY1)/2; orthoCam.position.set(cx,300,cz); orthoCam.up.set(0,0,-1); orthoCam.lookAt(cx,0,cz);
+  renderer.setPixelRatio(1); renderer.setSize(mini.width, mini.height, false); renderer.render(scene, orthoCam);
+  const g=miniBase.getContext('2d'); g.clearRect(0,0,miniBase.width,miniBase.height); g.drawImage(canvas,0,0,miniBase.width,miniBase.height);
+  // short room names on the map
+  g.font='600 13px "Hind Siliguri",sans-serif'; g.textAlign='center'; g.textBaseline='middle';
+  ROOMNAMES().forEach(([t,x,y])=>{ if(x<0||x>BW) return; const n=bn(t.replace(/\s*\d+'.*$/,'').replace(/\s*\(.*$/,'')).split(' ').slice(0,2).join(' ');
+    const [u,v]=m2c(x,y); g.lineWidth=3; g.strokeStyle='rgba(255,255,255,.9)'; g.strokeText(n,u,v); g.fillStyle='#1d2733'; g.fillText(n,u,v); });
+  scene.fog=keep.fog; groups.labels.visible=keep.lab; renderer.setPixelRatio(keep.pr); renderer.setSize(keep.sz.x, keep.sz.y, false);
+}
+function m2c(x,y){ return [ (x-MX0)/(MX1-MX0)*mini.width, (MY1-y)/(MY1-MY0)*mini.height ]; }
+function drawMini(){
+  mctx.clearRect(0,0,mini.width,mini.height); mctx.drawImage(miniBase,0,0);
+  const [u,v]=m2c(camera.position.x, -camera.position.z), a=-yaw-Math.PI/2;   // heading on the map (north up)
+  mctx.save(); mctx.translate(u,v); mctx.rotate(a);
+  mctx.fillStyle='rgba(31,79,138,.28)'; mctx.beginPath(); mctx.moveTo(0,0); mctx.arc(0,0,34,-0.6,0.6); mctx.closePath(); mctx.fill();   // view cone
+  mctx.fillStyle='#d32f2f'; mctx.strokeStyle='#fff'; mctx.lineWidth=2.5; mctx.beginPath(); mctx.arc(0,0,7,0,Math.PI*2); mctx.fill(); mctx.stroke();
+  mctx.restore();
+}
+mini.addEventListener('pointerdown',e=>{
+  e.stopPropagation(); const r=mini.getBoundingClientRect();
+  const x=MX0+(e.clientX-r.left)/r.width*(MX1-MX0), y=MY1-(e.clientY-r.top)/r.height*(MY1-MY0);
+  if (x<1||x>BW-1||y<1||y>BD-1) return;                      // stay inside the building
+  if (cut===0 && y>26.6 && !UNIT_ON) return;                  // ground: north half is open parking (no floor at flat level)
+  camera.position.x=x; camera.position.z=-y; walkSolids=null;
+});
+
 function resize(){
   const w = window.innerWidth, h = window.innerHeight;
   renderer.setSize(w,h,false); camera.aspect = w/h; camera.updateProjectionMatrix();
@@ -1661,7 +1763,8 @@ function loop(){
     if (flyAnim.t>=1) flyAnim=null;
   }
   const now=performance.now(), dt=Math.min(0.05,(now-(lastT||now))/1000); lastT=now;
-  if (walk) walkStep(dt); else controls.update();
+  if (walk){ walkStep(dt); drawMini(); } else controls.update();
+  sunTick(dt);
   renderer.render(scene, camera);
 }
 loop();
