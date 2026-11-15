@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>শিফার বাড়ি — ৩ডি মডেল (৩ তলা)</title>
-<meta name="description" content="শিফার বাড়ির ৩ডি মডেল — ৩ তলা আরসিসি বাড়ি, প্লট ৪৫' × ৪৮'। ঘুরিয়ে দেখুন, প্রতিটি তলা কেটে দেখুন, ভেতরে ঘরে ঘরে হেঁটে দেখুন।">
-<meta property="og:title" content="শিফার বাড়ি — ৩ডি মডেল">
+<title>আপন ঠিকানা — ৩ডি মডেল (৩ তলা)</title>
+<meta name="description" content="আপন ঠিকানার ৩ডি মডেল — ৩ তলা আরসিসি বাড়ি, প্লট ৪৫' × ৪৮'। ঘুরিয়ে দেখুন, প্রতিটি তলা কেটে দেখুন, ভেতরে ঘরে ঘরে হেঁটে দেখুন।">
+<meta property="og:title" content="আপন ঠিকানা — ৩ডি মডেল">
 <meta property="og:description" content="৩ তলা বাড়ির ৩ডি মডেল — ঘুরিয়ে দেখুন, তলা কেটে দেখুন, ভেতরে হেঁটে দেখুন।">
 <meta property="og:type" content="website">
 <meta name="theme-color" content="#1f4f8a">
@@ -109,61 +109,108 @@
   @media (max-width:520px){ .cgrid{grid-template-columns:1fr} .cbig{flex-direction:column} }
   @media print{ body{overflow:visible;height:auto;background:#fff} body>*:not(#modal){display:none!important} #modal{position:static;display:block!important;background:none;padding:0}
     #modal .box{box-shadow:none;max-height:none;max-width:none;padding:0} #mClose,.mbtns,.btns.pl{display:none!important} }
+  /* menu: tabs + tiles */
+  .panel{padding-top:10px}
+  #walkB{margin-bottom:10px}
+  .tabs{position:sticky;top:-10px;z-index:2;display:grid;grid-template-columns:repeat(4,1fr);gap:4px;background:var(--card);padding:4px 0 8px;margin:0 0 4px;border-bottom:1px solid var(--line)}
+  .tabs .tab{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 2px;font-size:12.5px;font-weight:600;border:0;border-radius:10px;background:transparent;color:#5b6775}
+  .tabs .tab span{font-size:19px;line-height:1}
+  .tabs .tab.on{background:#e6eef7;color:var(--blue)}
+  .pane{display:none}.pane.on{display:block;animation:fadeIn .15s}
+  @keyframes fadeIn{from{opacity:.3}to{opacity:1}}
+  .grp small{font-weight:500;color:#7a8592;font-size:11.5px}
+  .seg{display:flex;background:#eef2f6;border-radius:12px;padding:3px;gap:3px}
+  .seg button{flex:1;border:0;background:transparent;border-radius:9px;padding:8px 4px;font-size:13.5px;white-space:nowrap}
+  .seg button.on{background:#fff;color:var(--blue);font-weight:700;box-shadow:0 1px 4px rgba(0,0,0,.12)}
+  .seg.two{margin-top:8px}
+  .tiles{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+  .tiles button{display:flex;flex-direction:column;align-items:flex-start;gap:1px;text-align:left;padding:9px 10px;font-weight:600;font-size:14px}
+  .tiles button span{font-size:20px;margin-bottom:2px}
+  .tiles button small{font-weight:400;font-size:11.5px;color:#6b7684}
+  .tiles button.on small{color:#dbe7f5}
+  .tiles .wide{grid-column:1/3}
+  .toggles{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+  .toggles button{display:flex;align-items:center;gap:6px;text-align:left;padding:9px 10px;font-size:13.5px}
+  .toggles button span{font-size:16px}
+  .tip{font-size:12.5px;color:#5b6775;background:#fff8e1;border-radius:10px;padding:8px 10px;margin:10px 0 0;line-height:1.5}
+  @media (max-width:760px){ .seg button{font-size:13px;padding:9px 2px} .tabs{top:-6px} }
 </style>
 </head>
 <body>
 <div id="loading"><div class="spin"></div>৩ডি মডেল লোড হচ্ছে…</div>
 <canvas id="c"></canvas>
 <div id="topbar">
-  <div class="title">🏠 শিফার বাড়ি — ৩ডি<small>৩ তলা আরসিসি বাড়ি · প্লট ৪৫' × ৪৮'</small></div>
+  <div class="title">🏠 আপন ঠিকানা — ৩ডি<small>৩ তলা আরসিসি বাড়ি · প্লট ৪৫' × ৪৮'</small></div>
   <div class="sp"></div>
   <button id="infoBtn">ℹ️ তথ্য</button>
   <button id="helpBtn">❓ সাহায্য</button>
   <button id="panelBtn">☰ মেনু</button>
 </div>
 <div class="panel">
-  <div class="grp">🚶 ভেতরে হেঁটে দেখুন</div>
   <button id="walkB">🚶 ভেতরে ঢুকুন — ঘরে ঘরে হাঁটুন</button>
-  <div class="grp">🏢 কোন তলা দেখবেন (ছাদ সরিয়ে)</div>
-  <div class="btns">
-    <button data-cut="-1" class="on">পুরো বাড়ি</button>
-    <button data-cut="0">নিচতলা</button>
-    <button data-cut="1">দোতলা</button>
-    <button data-cut="2">তিনতলা</button>
+  <div class="tabs" role="tablist">
+    <button class="tab on" data-tab="see" role="tab"><span>🏢</span>দেখুন</button>
+    <button class="tab" data-tab="tools" role="tab"><span>🧰</span>টুলস</button>
+    <button class="tab" data-tab="opt" role="tab"><span>🏪</span>নিচতলা</button>
+    <button class="tab" data-tab="col" role="tab"><span>🎨</span>রঙ</button>
   </div>
-  <div class="grp">🎥 কোন দিক থেকে দেখবেন</div>
-  <div class="btns">
-    <button id="cW">সামনে (মেইন রোড)</button>
-    <button id="cNW">রাস্তার কোণা</button>
-    <button id="cSE">পেছন (দক্ষিণ-পূর্ব)</button>
-    <button id="cTop">উপর থেকে</button>
-    <button id="cSpin">নিজে নিজে ঘুরুক</button>
-  </div>
-  <div class="grp">👁️ দেখার ধরন</div>
-  <div class="btns">
-    <button id="vExt" class="on">বাড়ি</button>
-    <button id="vFnd">ফাউন্ডেশন</button>
-    <button id="nightB">🌙 রাতের দৃশ্য</button>
-    <button id="dimB" class="on">📏 মাপ</button>
-    <button id="wCol">🎨 রঙ দিয়ে চিনুন</button>
-  </div>
-  <div id="legend"></div>
-  <div class="grp">🏪 নিচতলার অপশন</div>
-  <div class="btns">
-    <button data-shops="3">৩টি দোকান</button><button data-shops="2" class="on">২টি দোকান</button><button data-shops="0">দোকান নেই</button>
-    <button id="shB" class="on">শাটার: নামানো</button>
-    <button id="unitB">পার্কিং জায়গা: পার্কিং</button>
-  </div>
-  <div class="grp">🧰 টুলস</div>
-  <div class="btns">
-    <button id="measB">📐 দূরত্ব মাপুন</button>
-    <button id="shotB">📷 ছবি সেভ</button>
-    <button id="linkB">🔗 এই ভিউ এর লিংক</button>
-    <button id="planB">🗺️ ২ডি নকশা</button>
-    <button id="costB">💰 খরচের হিসাব</button>
-  </div>
-  <div class="grp">🎨 নিজের পছন্দের রঙ</div>
-  <div id="colPick"></div>
+
+  <section class="pane on" data-pane="see">
+    <div class="grp">কোন তলা <small>ছাদ সরিয়ে ভেতর দেখুন</small></div>
+    <div class="seg">
+      <button data-cut="-1" class="on">পুরো বাড়ি</button>
+      <button data-cut="0">নিচতলা</button>
+      <button data-cut="1">দোতলা</button>
+      <button data-cut="2">তিনতলা</button>
+    </div>
+    <div class="grp">কোন দিক থেকে</div>
+    <div class="tiles">
+      <button id="cW"><span>🛣️</span>সামনে<small>মেইন রোড</small></button>
+      <button id="cNW"><span>📐</span>রাস্তার কোণা<small>উত্তর-পশ্চিম</small></button>
+      <button id="cSE"><span>🌳</span>পেছন<small>দক্ষিণ-পূর্ব</small></button>
+      <button id="cTop"><span>⬇️</span>উপর থেকে<small>নকশার মতো</small></button>
+    </div>
+    <div class="grp">দেখার ধরন</div>
+    <div class="toggles">
+      <button id="cSpin"><span>🔄</span>নিজে নিজে ঘুরুক</button>
+      <button id="nightB"><span>🌙</span>রাতের দৃশ্য</button>
+      <button id="dimB" class="on"><span>📏</span>মাপ ও নাম</button>
+      <button id="wCol"><span>🖍️</span>রঙ দিয়ে চিনুন</button>
+    </div>
+    <div class="seg two">
+      <button id="vExt" class="on">🏠 বাড়ি</button>
+      <button id="vFnd">🧱 ফাউন্ডেশন</button>
+    </div>
+    <div id="legend"></div>
+  </section>
+
+  <section class="pane" data-pane="tools">
+    <div class="tiles">
+      <button id="planB"><span>🗺️</span>২ডি নকশা<small>প্রিন্ট / PDF</small></button>
+      <button id="costB"><span>💰</span>খরচের হিসাব<small>রড, সিমেন্ট, ইট</small></button>
+      <button id="measB"><span>📐</span>দূরত্ব মাপুন<small>দুই জায়গায় ক্লিক</small></button>
+      <button id="shotB"><span>📷</span>ছবি সেভ<small>এই দৃশ্যের PNG</small></button>
+      <button id="linkB" class="wide"><span>🔗</span>এই দৃশ্যের লিংক কপি<small>যাকে পাঠাবেন সে হুবহু এটাই দেখবে</small></button>
+    </div>
+    <p class="tip">💡 যেকোনো ঘরের মেঝেতে ক্লিক করলে তার মাপ ও আয়তন দেখাবে।</p>
+  </section>
+
+  <section class="pane" data-pane="opt">
+    <div class="grp">দোকান <small>পশ্চিমের মেইন রোডমুখী</small></div>
+    <div class="seg">
+      <button data-shops="3">৩টি দোকান</button><button data-shops="2" class="on">২টি দোকান</button><button data-shops="0">দোকান নেই</button>
+    </div>
+    <div class="grp">অন্যান্য</div>
+    <div class="toggles">
+      <button id="shB" class="on">শাটার: নামানো</button>
+      <button id="unitB">পার্কিং জায়গা: পার্কিং</button>
+    </div>
+  </section>
+
+  <section class="pane" data-pane="col">
+    <div class="grp">নিজের পছন্দের রঙ <small>রঙের ঘরে চাপ দিন</small></div>
+    <div id="colPick"></div>
+  </section>
 </div>
 <div class="info" id="info"></div>
 <div id="modal"><div class="box"><button id="mClose" aria-label="বন্ধ">✕</button><div id="mBody"></div></div></div>
@@ -981,7 +1028,7 @@ pbox(40.0,-2.6,40.6,45.6, 0.3, 5.0, mat.band, groups.site);
   // name plate on canopy fascia
   const c=document.createElement('canvas'); c.width=1024; c.height=128; const x=c.getContext('2d');
   x.fillStyle='#2b2f33'; x.fillRect(0,0,1024,128); x.fillStyle='#e8d3a8'; x.font='700 78px "Hind Siliguri","Noto Sans Bengali","Nirmala UI",serif'; x.textAlign='center'; x.textBaseline='middle';
-  x.fillText("শিফার বাড়ি", 512, 70);
+  x.fillText("আপন ঠিকানা", 512, 70);
   const t=new THREE.CanvasTexture(c); t.encoding=THREE.sRGBEncoding;
   const plate=new THREE.Mesh(new THREE.PlaneGeometry(5.0,0.62), new THREE.MeshStandardMaterial({map:t, roughness:0.6, clippingPlanes:clip}));
   plate.position.set(-0.05, PL+10.4, -37.2); plate.rotation.y=-Math.PI/2; groups.bldg.add(plate);
@@ -1395,7 +1442,7 @@ setWallColors(false);
   apply(hidden);
   btn.onclick=()=>{ hidden=!hidden; apply(hidden); if(!hidden) document.body.classList.remove('showinfo'); };
   // on phones, close the menu after a choice so the model is visible
-  document.querySelectorAll('.panel button').forEach(b=>b.addEventListener('click',()=>{ if(small() && b.id!=='wCol' && b.id!=='dimB'){ hidden=true; apply(true); } }));
+  document.querySelectorAll('.panel button').forEach(b=>b.addEventListener('click',()=>{ if(small() && !b.classList.contains('tab') && !['wCol','dimB','nightB','cSpin','colReset','shB','unitB'].includes(b.id)){ hidden=true; apply(true); } }));
   const ib=document.getElementById('infoBtn');
   ib.onclick=()=>{ const on=!document.body.classList.contains('showinfo'); document.body.classList.toggle('showinfo',on); if(on){ hidden=true; apply(true); } };
   const help=on=>document.body.classList.toggle('showhelp',on);
@@ -1443,7 +1490,7 @@ const measMat=new THREE.MeshBasicMaterial({color:0x0a7d3b, depthTest:false});
 let measuring=false, measA=null;
 const measB=document.getElementById('measB');
 function setMeasure(on){ measuring=on; measA=null; measB.classList.toggle('on',on); document.body.classList.toggle('measuring',on);
-  measB.textContent = on ? '📐 মাপা বন্ধ করুন' : '📐 দূরত্ব মাপুন'; if(!on) measG.clear(); pop.style.display='none';
+  measB.innerHTML = on ? '<span>✋</span>মাপা বন্ধ করুন<small>মাপ মুছে যাবে</small>' : '<span>📐</span>দূরত্ব মাপুন<small>দুই জায়গায় ক্লিক</small>'; if(!on) measG.clear(); pop.style.display='none';
   if(on) toast('দুটি জায়গায় ক্লিক করুন — দূরত্ব দেখাবে'); }
 measB.onclick=()=>setMeasure(!measuring);
 function dot(p){ const m=new THREE.Mesh(new THREE.SphereGeometry(0.35,12,8),measMat); m.position.copy(p); m.renderOrder=10; measG.add(m); }
@@ -1467,7 +1514,7 @@ controls.addEventListener('start',()=>{ pop.style.display='none'; });
 // screenshot (render then read in the same tick, so no preserveDrawingBuffer needed)
 document.getElementById('shotB').onclick=()=>{
   renderer.render(scene,camera);
-  const a=document.createElement('a'); a.href=canvas.toDataURL('image/png'); a.download='shifar-bari-'+Date.now()+'.png';
+  const a=document.createElement('a'); a.href=canvas.toDataURL('image/png'); a.download='apon-thikana-'+Date.now()+'.png';
   document.body.appendChild(a); a.click(); a.remove(); toast('ছবি সেভ হয়েছে');
 };
 // colour picker
@@ -1563,7 +1610,7 @@ function planImage(k){
   // compose on a 2D canvas: white paper, title, north arrow, scale bar
   const pc=document.createElement('canvas'); pc.width=W; pc.height=H+130; const g=pc.getContext('2d');
   g.fillStyle='#fff'; g.fillRect(0,0,pc.width,pc.height); g.drawImage(canvas,0,90,W,H);
-  g.fillStyle='#1f4f8a'; g.font='700 40px "Hind Siliguri",sans-serif'; g.fillText('শিফার বাড়ি — '+floorNames[k]+' এর নকশা',30,58);
+  g.fillStyle='#1f4f8a'; g.font='700 40px "Hind Siliguri",sans-serif'; g.fillText('আপন ঠিকানা — '+floorNames[k]+' এর নকশা',30,58);
   g.fillStyle='#5b6775'; g.font='500 22px "Hind Siliguri",sans-serif'; g.fillText(bn("প্লট 45' × 48' · বিল্ডিং 37'-6\" × 43' · উত্তর উপরে"),30,H+125-40);
   const ppf=W/(2*hw), bx=W-60-20*ppf, by=H+70;   // 20 ft scale bar
   g.fillStyle='#1d2733'; for(let i=0;i<4;i++){ if(i%2===0) g.fillRect(bx+i*5*ppf,by,5*ppf,10); } g.strokeRect(bx,by,20*ppf,10);
@@ -1580,12 +1627,21 @@ function showPlan(k){
   const url=planImage(k);
   openModal('<h2>🗺️ ২ডি নকশা (ফ্লোর প্ল্যান)</h2><div class="btns pl">'+floorNames.map((f,i)=>'<button data-pl="'+i+'"'+(i===k?' class="on"':'')+'>'+f+'</button>').join('')+'</div>'
     +'<img id="planImg" src="'+url+'" alt="'+floorNames[k]+' এর নকশা">'
-    +'<div class="mbtns"><a class="btnl" download="shifar-bari-plan-'+(k+1)+'.png" href="'+url+'">⬇️ ছবি সেভ</a><button id="pPrint">🖨️ প্রিন্ট / PDF</button></div>','plan');
+    +'<div class="mbtns"><a class="btnl" download="apon-thikana-plan-'+(k+1)+'.png" href="'+url+'">⬇️ ছবি সেভ</a><button id="pPrint">🖨️ প্রিন্ট / PDF</button></div>','plan');
   mBody.querySelectorAll('[data-pl]').forEach(b=>b.onclick=()=>showPlan(+b.dataset.pl));
   document.getElementById('pPrint').onclick=()=>window.print();
 }
 document.getElementById('planB').onclick=()=>showPlan(cut>=0?cut:1);
 
+
+// ---------- menu tabs ----------
+(function(){
+  const tabs=[...document.querySelectorAll('.tabs .tab')], panes=[...document.querySelectorAll('.pane')];
+  function show(t){ tabs.forEach(b=>{ const on=b.dataset.tab===t; b.classList.toggle('on',on); b.setAttribute('aria-selected',on); });
+    panes.forEach(p=>p.classList.toggle('on',p.dataset.pane===t)); try{ localStorage.setItem('menuTab',t); }catch(e){} }
+  tabs.forEach(b=>b.addEventListener('click',()=>show(b.dataset.tab)));
+  let t=null; try{ t=localStorage.getItem('menuTab'); }catch(e){} if(t && tabs.some(b=>b.dataset.tab===t)) show(t);
+})();
 function resize(){
   const w = window.innerWidth, h = window.innerHeight;
   renderer.setSize(w,h,false); camera.aspect = w/h; camera.updateProjectionMatrix();
